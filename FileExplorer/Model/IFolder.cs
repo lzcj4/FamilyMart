@@ -27,16 +27,6 @@ namespace FileExplorer.Model
         bool IsCanceled { get; }
 
         /// <summary>
-        /// Is tree item  checkbox visible
-        /// </summary>
-        bool IsCheckVisible { get; set; }
-
-        /// <summary>
-        /// Folder in virtual folder has a virtual parent
-        /// </summary>
-        IFolder VirtualParent { get; set; }
-
-        /// <summary>
         /// Sub folders
         /// </summary>
         ObservableCollection<IFolder> Folders { get; }

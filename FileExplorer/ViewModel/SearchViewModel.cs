@@ -38,7 +38,6 @@ namespace FileExplorer.ViewModel
                     {
                         this.Cancel();
                         this.IsSearching = false;
-                        this.IsChecked = false;
                         this.OnPropertyChanged("IsSearchCompleted");
                     }
                     else
@@ -135,19 +134,6 @@ namespace FileExplorer.ViewModel
             }
         }
 
-        private bool? isChecked = false;
-        public bool? IsChecked
-        {
-            get { return isChecked; }
-            set
-            {
-                if (SetProperty(ref isChecked, value, "IsChecked"))
-                {
-                    SetIsCheckedAsync();
-                }
-            }
-        }
-
         protected IFolder RootItem { get; set; }
         protected bool IsCanceled { get; set; }
         private ObservableCollection<IFile> items = null;
@@ -194,33 +180,10 @@ namespace FileExplorer.ViewModel
             this.SearchKeyword = string.Empty;
             this.Cancel();
             this.IsSearching = false;
-            this.IsChecked = false;
             if (!this.RootItem.IsNull())
             {
                 this.RootItem = null;
             }
-        }
-
-        public IEnumerable<IFile> GetCheckedItems()
-        {
-            return this.Items.Where(item => item.IsChecked != false);
-        }
-
-        private void SetIsCheckedAsync()
-        {
-            Action action = () =>
-            {
-                //May be is searching         
-                if (this.IsChecked == true || this.IsChecked == false)
-                {
-                    var temp = this.Items.ToList();
-                    foreach (var item in temp)
-                    {
-                        item.IsChecked = this.IsChecked;
-                    }
-                }
-            };
-            action.BeginInvoke((ar) => { action.EndInvoke(ar); }, action);
         }
 
         #region Timer
@@ -448,10 +411,6 @@ namespace FileExplorer.ViewModel
                         IFile file = item.Clone() as IFile;
                         if (!file.IsNull())
                         {
-                            if (this.IsChecked == true || this.IsChecked == false)
-                            {
-                                file.IsChecked = this.IsChecked;
-                            }
                             destination.Add(file);
                         }
                     }

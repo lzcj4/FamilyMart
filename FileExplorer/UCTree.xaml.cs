@@ -92,7 +92,6 @@ namespace FileExplorer
                     newSelectFolder = MoveDown(folder);
                     break;
                 case Key.Space:
-                    folder.IsChecked = folder.IsChecked == false;
                     break;
                 default:
                     break;
@@ -128,17 +127,8 @@ namespace FileExplorer
                 return newSelectFolder;
             }
 
-            if (folder.Parent == folder ||
-                (!folder.Parent.VirtualParent.IsNull() && folder.Parent.VirtualParent == folder.Parent.VirtualParent.Parent))
+            if (folder.Parent == folder)
             {
-                if (folder.Parent == folder)
-                {
-                    newSelectFolder = folder;
-                }
-                else
-                {
-                    newSelectFolder = folder.Parent.VirtualParent;
-                }
                 newSelectFolder.IsSelected = true;
                 lastFolder = newSelectFolder;
                 return newSelectFolder;
@@ -234,31 +224,8 @@ namespace FileExplorer
             }
             else
             {
-                if (folder.Parent == folder ||
-                   (!folder.Parent.VirtualParent.IsNull() && folder.Parent.VirtualParent == folder.Parent.VirtualParent.Parent))
-                {
-                    var allTreeItems = treeExplorer.Items;
-                    int index = -1;
-                    if (folder.Parent == folder)
-                    {
-                        index = allTreeItems.IndexOf(folder);
-                        if (index > 0)
-                        {
-                            newSelectFolder = allTreeItems[index - 1] as IFolder;
-                            newSelectFolder.IsSelected = true;
-                        }
-                    }
-                    else
-                    {
-                        newSelectFolder = folder.Parent.VirtualParent;
-                        newSelectFolder.IsSelected = true;
-                    }
-                }
-                else
-                {
-                    newSelectFolder = folder.Parent;
-                    newSelectFolder.IsSelected = true;
-                }
+                newSelectFolder = folder.Parent;
+                newSelectFolder.IsSelected = true;
             }
             return newSelectFolder;
         }

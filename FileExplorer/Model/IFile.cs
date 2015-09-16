@@ -55,15 +55,6 @@ namespace FileExplorer.Model
         /// </summary>
         bool IsFile { get; }
 
-        /// <summary>
-        /// True: full checked
-        /// Null: half checked
-        /// False: not checked
-        /// </summary>
-        bool? IsChecked { get; set; }
-
-        void SetChecked(bool? isChecked);
-
         IFolder Parent { get; }
     }
 }

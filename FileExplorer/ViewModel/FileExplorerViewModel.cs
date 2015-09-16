@@ -131,135 +131,6 @@ namespace FileExplorer.ViewModel
             });
         }
 
-        #region Check operation
-
-        private IEnumerable<IFile> GetCheckedFiles()
-        {
-            IEnumerable<IFile> checkedItems = new IFile[0];
-            if (!this.SearchViewModel.IsNull() && this.SearchViewModel.IsSearchEnabled)
-            {
-                checkedItems = this.SearchViewModel.GetCheckedItems();
-            }
-            else if (!this.RootFolder.IsNull() && this.RootFolder is IFolderCheck)
-            {
-                checkedItems = (this.RootFolder as IFolderCheck).GetCheckedItems(this.RootFolder);
-            }
-            return checkedItems;
-        }
-
-        public IEnumerable<string> GetCheckedPaths()
-        {
-            IEnumerable<IFile> checkedItems = GetCheckedFiles();
-            IEnumerable<string> result = checkedItems.Select(item => item.FullPath);
-
-            return result;
-        }
-
-        IList<string> checkedPaths;
-        public IList<string> CheckedPaths
-        {
-            get
-            {
-                checkedPaths = checkedPaths ?? new List<string>();
-                return checkedPaths;
-            }
-            private set
-            {
-                if (checkedPaths != value)
-                {
-                    checkedPaths = value;
-                }
-            }
-        }
-
-        public void SetCheckedPaths(IList<string> pathList)
-        {
-            if (pathList.IsNullOrEmpty())
-            {
-                return;
-            }
-            this.CheckedPaths = pathList.OrderBy(item => item.Length).ToList();
-            SetCheckedPaths();
-        }
-
-        public void SetCheckedPaths()
-        {
-            SetPathChecked(CheckedPaths);
-        }
-
-        public void SetPathChecked(IEnumerable<string> list, bool isChecked = true)
-        {
-            if (list.IsNullOrEmpty() || this.RootFolder.IsNull()) //this.RootFolder.IsLoading
-            {
-                return;
-            }
-
-            IsChecking = true;
-            int totalItems = list.Count();
-            int checkProcessing = 0;
-
-            Action action = () =>
-            {
-                int i = 0;
-                const int timeout = 60;
-                //Add timeout for checking mask view can't be removed
-                // minutes
-                while (true)
-                {
-                    Thread.Sleep(1 * 1000);
-                    if (!IsChecking)
-                    {
-                        return;
-                    }
-                    if (i++ > timeout)
-                    {
-                        if (IsChecking)
-                        {
-                            IsChecking = false;
-                        }
-                        return;
-                    }
-                }
-            };
-            action.BeginInvoke((ar) => action.EndInvoke(ar), action);
-
-            foreach (string path in list)
-            {
-                ///Maybe change explore factory during checking
-                if (RootFolder.IsNull())
-                {
-                    IsChecking = false;
-                    break;
-                }
-
-                this.RootFolder.GetItemAsync(path, (file) =>
-                {
-                    checkProcessing++;
-                    LogHelper.DebugFormat("/****　set checked index:{0}, total:{1}", checkProcessing, totalItems);
-                    if (checkProcessing == totalItems)
-                    {
-                        IsChecking = false;
-                    }
-                    if (!file.IsNull())
-                    {
-                        file.IsChecked = isChecked;
-#if DEBUG
-                        //if (file is CloudFile || file is CloudFolder)
-                        //{
-                        //    LogHelper.DebugFormat("/++++　set checked path:{0}", file.FolderPath + file.Name);
-                        //}
-                        //else
-                        //{
-                        //    LogHelper.DebugFormat("/++++　set checked path:{0}", file.FullPath);
-                        //}
-#endif
-                    }
-                });
-            }
-        }
-
-        #endregion
-
         internal void InitialExplorer(ExplorerFactoryBase factory)
         {
             if (factory.IsNull())
@@ -280,10 +151,6 @@ namespace FileExplorer.ViewModel
                             if (RootFolder.IsNull())
                             {
                                 RootFolder = item;
-                                if (RootFolder is LocalRootFolder)
-                                {
-                                    (RootFolder as LocalRootFolder).DriverChanged += FileExplorerViewModel_DriverChanged;
-                                }
                             }
                             this.Items.Add(item);
                         }
@@ -294,14 +161,8 @@ namespace FileExplorer.ViewModel
                     }
                 });
 
-                FileBase.RaiseCheckedChanged(RootFolder, false);
             });
 
-        }
-
-        void FileExplorerViewModel_DriverChanged(List<string> drives, bool isAdd)
-        {
-            SetCheckedPaths();
         }
 
         public void LoadLocalExplorer()
@@ -335,10 +196,6 @@ namespace FileExplorer.ViewModel
             this.RootFactory = null;
             if (!RootFolder.IsNull())
             {
-                if (RootFolder is LocalRootFolder)
-                {
-                    (RootFolder as LocalRootFolder).DriverChanged -= FileExplorerViewModel_DriverChanged;
-                }
                 this.RootFolder.Dispose();
                 this.RootFolder = null;
             }

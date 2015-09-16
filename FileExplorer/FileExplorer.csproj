@@ -20,7 +20,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\build\x86\Debug\</OutputPath>
+    <OutputPath>..\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,7 +29,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\build\x86\Release\</OutputPath>
+    <OutputPath>..\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -60,13 +60,11 @@
     <Compile Include="Helper\AndVisibilityConverter.cs" />
     <Compile Include="Helper\BooleanConverter.cs" />
     <Compile Include="Helper\CommonExtension.cs" />
-    <Compile Include="Helper\DriverWatcher.cs" />
     <Compile Include="Helper\GridColumnWidthConverter.cs" />
     <Compile Include="Helper\LogHelper.cs" />
     <Compile Include="Helper\ReverseVisibilityConverter.cs" />
     <Compile Include="Model\FileBase.cs" />
     <Compile Include="Model\FolderBase.cs" />
-    <Compile Include="Model\IFileCheck.cs" />
     <Compile Include="Model\IFile.cs" />
     <Compile Include="Model\IFolder.cs" />
     <Compile Include="Model\LocalFile.cs" />
@@ -116,12 +114,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resource\Indicator_small.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DAL\DAL.csproj">
-      <Project>{A54F8AEC-48A8-44C8-A9FC-E68E225B8E62}</Project>
-      <Name>DAL</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

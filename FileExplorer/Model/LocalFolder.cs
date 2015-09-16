@@ -9,60 +9,6 @@ namespace FileExplorer.Model
 {
     public class LocalFolder : FolderBase
     {
-        internal const FileAttributes ExcludeFileAttributes = FileAttributes.Hidden | FileAttributes.System;//| FileAttributes.Temporary;
-        internal static List<string> LocalExcludedFolders = new List<string>();
-
-        static LocalFolder()
-        {
-            var str = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-            string progPath = str.IsNullOrEmpty() ? string.Empty : str.ToLower();
-
-            str = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
-            string progX86Path = str.IsNullOrEmpty() ? string.Empty : str.ToLower();
-
-            str = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
-            string windPath = str.IsNullOrEmpty() ? string.Empty : str.ToLower();
-
-            str = Environment.GetEnvironmentVariable("ProgramW6432");
-            string progW6432 = str.IsNullOrEmpty() ? string.Empty : str.ToLower();
-
-            if (!windPath.IsNullOrEmpty())
-            {
-                LocalExcludedFolders.Add(windPath);
-            }
-
-            if (!progPath.IsNullOrEmpty())
-            {
-                LocalExcludedFolders.Add(progPath);
-            }
-
-            if (!progW6432.IsNullOrEmpty() && !LocalExcludedFolders.Contains(progW6432))
-            {
-                LocalExcludedFolders.Add(progW6432);
-            }
-
-            if (!progX86Path.IsNullOrEmpty() && !LocalExcludedFolders.Contains(progX86Path))
-            {
-                LocalExcludedFolders.Add(progX86Path);
-            }
-        }
-
-        public static bool GetIsExcludeFolder(string path)
-        {
-            bool result = false;
-            if (!path.IsNullOrEmpty())
-            {
-                result = LocalExcludedFolders.Contains(path.ToLower());
-            }
-            return result;
-        }
-
-        public static bool GetIsExcludeAttribute(FileAttributes attrs)
-        {
-            bool result = (attrs & ExcludeFileAttributes) > 0;
-            return result;
-        }
-
         public static readonly IFolder PlackHolderItem = new LocalFolder();
 
         protected LocalFolder()
@@ -81,11 +27,6 @@ namespace FileExplorer.Model
             }
 
             this.AddPlaceHolder();
-            this.IsEnabled = !LocalExcludedFolders.Contains(path.ToLower());
-            if (!this.Parent.IsNull() && !this.Parent.IsEnabled)
-            {
-                this.IsEnabled = this.Parent.IsEnabled;
-            }
 
             try
             {
@@ -117,7 +58,6 @@ namespace FileExplorer.Model
 
             this.AddPlaceHolder();
             string fullPath = dirInfo.FullName;
-            this.IsEnabled = !LocalExcludedFolders.Contains(fullPath.ToLower());
             if (!this.Parent.IsNull() && !this.Parent.IsEnabled)
             {
                 this.IsEnabled = this.Parent.IsEnabled;
@@ -163,38 +103,6 @@ namespace FileExplorer.Model
         private IEnumerable<IFolder> SearchFolders(string searchPattern = searchAllWildChar)
         {
             IEnumerable<IFolder> result = new IFolder[0];
-
-            ///Check is folder is existed before query
-            ///CD-ROM will block query for a while without check existed
-            try
-            {
-                //The specified path, file name, or both are too long. 
-                //The fully qualified file name must be less than 260 characters, 
-                //and the directory name must be less than 248 characters.
-                if (Directory.Exists(this.FullPath) && this.FullPath.Length < folderPathMaxLen)
-                {
-                    DirectoryInfo dirInfo = new DirectoryInfo(this.FullPath);
-                    result = dirInfo.GetDirectories().Where(item =>
-                    {
-                        try
-                        {
-                            return item.FullName.Length < folderPathMaxLen && (item.Attributes & ExcludeFileAttributes) == 0;
-                        }
-                        catch (Exception ex)
-                        {
-                            ///Access denied exception
-                            LogHelper.Debug(ex);
-                            return false;
-                        }
-                    }).Select(item => new LocalFolder(item, this));
-                    result = SetFolderOrder(result);
-                }
-            }
-            catch (Exception ex)
-            {
-                ///Access denied exception
-                LogHelper.Debug(ex);
-            }
             return result;
         }
 
@@ -211,36 +119,6 @@ namespace FileExplorer.Model
         private IEnumerable<IFile> SearchFiles(string searchPattern = searchAllWildChar)
         {
             IEnumerable<IFile> result = new IFile[0];
-            try
-            {
-                //The specified path, file name, or both are too long. 
-                //The fully qualified file name must be less than 260 characters, 
-                //and the directory name must be less than 248 characters.
-                if (Directory.Exists(this.FullPath) && this.FullPath.Length < folderPathMaxLen)
-                {
-                    DirectoryInfo dirInfo = new DirectoryInfo(this.FullPath);
-                    result = dirInfo.GetFiles().Where(item =>
-                    {
-                        try
-                        {
-                            return item.FullName.Length < filePathMaxLen && (item.Attributes & ExcludeFileAttributes) == 0;
-                        }
-                        catch (Exception ex)
-                        {
-                            ///Access denied exception
-                            LogHelper.Debug(ex);
-                            return false;
-                        }
-                    }).Select(item => new LocalFile(item, this));
-
-                    result = SetFolderOrder(result);
-                }
-            }
-            catch (Exception ex)
-            {
-                ///Access denied exception
-                LogHelper.Debug(ex);
-            }
             return result;
         }
 

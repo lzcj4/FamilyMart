@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace FileExplorer.Model
 {
-    public abstract class FolderBase : FileBase, IFolder, IFolderCheck
+    public abstract class FolderBase : FileBase, IFolder
     {
         protected const string searchAllWildChar = "*";
         protected object lockObj = new object();
@@ -66,37 +66,7 @@ namespace FileExplorer.Model
                 SetProperty(ref isSelected, value, "IsSelected");
             }
         }
-
-        public override bool? IsChecked
-        {
-            get { return isChecked; }
-            set
-            {
-                if (SetProperty(ref isChecked, value, "IsChecked"))
-                {
-                    CheckParent(this, isChecked);
-                    CheckChildren(this, isChecked);
-                    RaiseCheckedChanged(this, true);
-                }
-            }
-        }
-
-        private bool isCheckVisible = true;
-        /// <summary>
-        /// Is tree item  checkbox visible
-        /// </summary>
-        public bool IsCheckVisible
-        {
-            get
-            {
-                return isCheckVisible;
-            }
-            set
-            {
-                SetProperty(ref isCheckVisible, value, "IsCheckVisible");
-            }
-        }
-
+        
         public bool IsCanceled
         {
             get;
@@ -119,11 +89,6 @@ namespace FileExplorer.Model
         {
             this.FullPath = path;
             this.Parent = parent;
-            ///The root item's parent is null for the constructor
-            if (!parent.IsNull() && this.Parent.IsChecked == true)
-            {
-                this.SetChecked(this.Parent.IsChecked);
-            }
             fileAttr = FileAttributes.Directory;
         }
 
@@ -179,99 +144,6 @@ namespace FileExplorer.Model
             set { isFileLoaded = value; }
         }
 
-        /// <summary>
-        /// Only support for all checked or no checked by parent, UI operations by user
-        /// </summary>
-        /// <param name="parentFolder"></param>
-        /// <param name="isChecked"></param>
-        public void CheckChildren(IFolder parentFolder, bool? isChecked)
-        {
-            if (parentFolder.IsNull() || !isChecked.HasValue ||
-                !(parentFolder is IFolder))
-            {
-                return;
-            }
-
-            IFolder parent = parentFolder as IFolder;
-            ///Set IsChecked property  is better than SetChecked method  for lazy load
-            try
-            {
-                foreach (IFile file in parent.Files)
-                {
-                    file.SetChecked(isChecked);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Error(string.Format("FolderBase.CheckChildren:{0}", ex.Message));
-            }
-
-            try
-            {
-                foreach (IFolder folder in parent.Folders)
-                {
-                    folder.SetChecked(isChecked);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Error(string.Format("FolderBase.CheckChildren:{0}", ex.Message));
-            }
-
-            try
-            {
-                foreach (IFolder folder in parent.Folders)
-                {
-                    CheckChildren(folder, isChecked);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Error(string.Format("FolderBase.CheckChildren:{0}", ex.Message));
-            }
-        }
-
-        /// <summary>
-        /// Get all checked items
-        /// </summary>
-        /// <param name="folder"></param>
-        /// <returns></returns>
-        public IEnumerable<IFile> GetCheckedItems(IFolder folder)
-        {
-            IEnumerable<IFile> result = new IFile[0];
-            if (folder.IsNull() ||
-                folder.IsChecked == false || !folder.IsEnabled)
-            {
-                return result;
-            }
-
-            ///The root folder's parent is itself
-            ///so filter these folder items
-            if (folder.IsChecked == true && folder.Parent != folder)
-            {
-                result = result.Union(new IFile[] { folder });
-            }
-            else
-            {
-                foreach (var item in folder.Items)
-                {
-                    if (item.IsChecked == true)
-                    {
-                        result = result.Union(new IFile[] { item });
-                    }
-                    else if ((item.IsChecked == null) && (item is IFolder))
-                    {
-                        IFolder subFolder = item as IFolder;
-                        if (!subFolder.IsNull())
-                        {
-                            result = result.Union((item as IFolderCheck).GetCheckedItems(subFolder));
-                        }
-                    }
-                }
-            }
-
-            return result;
-        }
 
         public virtual void Cancel()
         {

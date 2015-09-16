@@ -218,29 +218,7 @@ namespace FileExplorer
             if (!folder.IsNull())
             {
                 return;
-            }
-
-            try
-            {
-                if (ck.IsChecked == true)
-                {
-                    foreach (IFile item in lvContent.ItemsSource)
-                    {
-                        item.IsChecked = true;
-                    }
-                }
-                else if (ck.IsChecked == false)
-                {
-                    foreach (IFile item in lvContent.ItemsSource)
-                    {
-                        item.IsChecked = false;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Error(ex.Message);
-            }            
+            }          
         }
 
         void ItemCheckBox_Click(object sender, RoutedEventArgs e)
@@ -258,18 +236,6 @@ namespace FileExplorer
                 return;
             }
 
-            if (list.All(item => item.IsChecked == true))
-            {
-                SetIsAllChecked(this, true);
-            }
-            else if (list.All(item => item.IsChecked == false))
-            {
-                SetIsAllChecked(this, false);
-            }
-            else
-            {
-                SetIsAllChecked(this, null);
-            }
         }
 
         void ListViewItem_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -282,7 +248,7 @@ namespace FileExplorer
 
             if (e.Key == Key.Space)
             {
-                file.IsChecked = file.IsChecked == false;
+               
             }
             else if (e.Key == Key.Enter)
             {

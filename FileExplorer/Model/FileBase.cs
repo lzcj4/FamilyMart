@@ -8,10 +8,8 @@ using FileExplorer.ViewModel;
 
 namespace FileExplorer.Model
 {
-    public abstract class FileBase : ViewModelBase, IFile, IFileCheck
+    public abstract class FileBase : ViewModelBase, IFile
     {
-        public static event EventHandler<ContentEventArgs<IFile>> ItemCheckedChanged;
-
         #region  IFile Properties
 
         private string fullPath = string.Empty;
@@ -145,24 +143,7 @@ namespace FileExplorer.Model
                 SetProperty(ref isEnabled, value, "IsEnabled");
             }
         }
-
-        protected bool? isChecked = false;
-        public virtual bool? IsChecked
-        {
-            get
-            {
-                return isChecked;
-            }
-            set
-            {
-                if (SetProperty(ref isChecked, value, "IsChecked"))
-                {
-                    CheckParent(this, isChecked);
-                    RaiseCheckedChanged(this, true);
-                }
-            }
-        }
-
+        
         private IFolder parent = null;
         public IFolder Parent
         {
@@ -262,10 +243,6 @@ namespace FileExplorer.Model
             this.FullPath = path;
             this.Parent = parent;
             this.IsEnabled = parent.IsEnabled;
-            if (this.Parent.IsChecked == true)
-            {
-                this.SetChecked(this.Parent.IsChecked);
-            }
         }
 
         /// <summary>
@@ -275,82 +252,7 @@ namespace FileExplorer.Model
         protected FileBase()
         {
         }
-
-        /// <summary>
-        /// Checked item not to do the recursive  checked opertion
-        /// </summary>
-        /// <param name="isChecked"></param>
-        public void SetChecked(bool? isChecked)
-        {
-            if (this.IsEnabled)
-            {
-                this.isChecked = isChecked;
-                this.OnPropertyChanged("IsChecked");
-                RaiseCheckedChanged(this, false);
-            }
-        }
-
-        public void CheckParent(IFile child, bool? isChecked)
-        {
-            if (child.IsNull() || child.Parent.IsNull() ||
-                child == child.Parent)//For the root folder
-            {
-                return;
-            }
-
-            IFolder parent = child.Parent;
-            IEnumerable<IFile> children = null;
-            try
-            {
-
-                var tempItems = parent.Items.ToList();
-                children = tempItems.Where(item => item.IsEnabled);
-            }
-            catch (Exception)
-            {
-                return;
-            }
-
-            if (!isChecked.HasValue)
-            {
-                parent.SetChecked(isChecked);
-            }
-            else
-            {
-                if (isChecked.Value)
-                {
-                    if (children.All(item => item.IsChecked == true))
-                    {
-                        parent.SetChecked(isChecked);
-                    }
-                    else
-                    {
-                        parent.SetChecked(null);
-                    }
-                }
-                else
-                {
-                    if (children.Any(item => item.IsChecked != false))
-                    {
-                        parent.SetChecked(null);
-                    }
-                    else
-                    {
-                        parent.SetChecked(isChecked);
-                    }
-                }
-            }
-            CheckParent(parent, isChecked);
-        }
-
-        public static void RaiseCheckedChanged(IFile file, bool isProperty)
-        {
-            if (!ItemCheckedChanged.IsNull())
-            {
-                ItemCheckedChanged(file, new ContentEventArgs<IFile>(file, isProperty));
-            }
-        }
-
+        
         static IDictionary<string, Tuple<ImageSource, string, string>> iconCache = new Dictionary<string, Tuple<ImageSource, string, string>>();
         internal static Tuple<ImageSource, string, string> GetIcon(string path, FileAttributes attr)
         {
