@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
-using DAL.Model;
 using FamilyMartUI.Common;
 using FamilyMartUI.ViewModel;
 
 namespace FamilyMartUI.UC
 {
     /// <summary>
-    /// Interaction logic for UCContent.xaml
+    /// Interaction logic for UCDetail.xaml
     /// </summary>
-    public partial class UCReport : UserControl
+    public partial class UCDetail : UserControl
     {
         #region DP
 
@@ -22,7 +20,7 @@ namespace FamilyMartUI.UC
         ///Content view
         /// </summary>
         public static readonly DependencyProperty ContentViewProperty =
-            DependencyProperty.Register("ContentView", typeof(ICollectionView), typeof(UCReport));
+            DependencyProperty.Register("ContentView", typeof(ICollectionView), typeof(UCDetail));
 
         public static void SetContentView(DependencyObject element, ICollectionView value)
         {
@@ -36,97 +34,6 @@ namespace FamilyMartUI.UC
             return (ICollectionView)element.GetValue(ContentViewProperty);
         }
 
-        /// <summary>
-        ///Is Loading
-        /// </summary>
-        public static readonly DependencyProperty IsLoadingProperty =
-            DependencyProperty.Register("IsLoading", typeof(bool), typeof(UCReport));
-
-        public static void SetIsLoading(DependencyObject element, bool value)
-        {
-            if (element == null) return;
-            element.SetValue(IsLoadingProperty, value);
-        }
-
-        public static bool GetIsLoading(DependencyObject element)
-        {
-            if (element == null) return false;
-            return (bool)element.GetValue(IsLoadingProperty);
-        }
-
-        /// <summary>
-        ///Is content empty
-        /// </summary>
-        public static readonly DependencyProperty IsEmptyProperty =
-            DependencyProperty.Register("IsEmpty", typeof(bool), typeof(UCReport));
-
-        public static void SetIsEmpty(DependencyObject element, bool value)
-        {
-            if (element == null) return;
-            element.SetValue(IsEmptyProperty, value);
-        }
-
-        public static bool GetIsEmpty(DependencyObject element)
-        {
-            if (element == null) return false;
-            return (bool)element.GetValue(IsEmptyProperty);
-        }
-
-        /// <summary>
-        ///Is Error
-        /// </summary>
-        public static readonly DependencyProperty IsErrorProperty =
-            DependencyProperty.Register("IsError", typeof(bool), typeof(UCReport));
-
-        public static void SetIsError(DependencyObject element, bool value)
-        {
-            if (element == null) return;
-            element.SetValue(IsErrorProperty, value);
-        }
-
-        public static bool GetIsError(DependencyObject element)
-        {
-            if (element == null) return false;
-            return (bool)element.GetValue(IsErrorProperty);
-        }
-
-        /// <summary>
-        ///Empty hint
-        /// </summary>
-        public static readonly DependencyProperty EmptyHintProperty =
-            DependencyProperty.Register("EmptyHint", typeof(string), typeof(UCReport));
-
-        public static void SetEmptyHint(DependencyObject element, string value)
-        {
-            if (element == null) return;
-            element.SetValue(EmptyHintProperty, value);
-        }
-
-        public static string GetEmptyHint(DependencyObject element)
-        {
-            if (element == null) return string.Empty;
-            return (string)element.GetValue(EmptyHintProperty);
-        }
-
-        /// <summary>
-        ///Error hint
-        /// </summary>
-        public static readonly DependencyProperty ErrorHintProperty =
-            DependencyProperty.Register("ErrorHint", typeof(string), typeof(UCReport));
-
-        public static void SetErrorHint(DependencyObject element, string value)
-        {
-            if (element == null) return;
-            element.SetValue(ErrorHintProperty, value);
-        }
-
-        public static string GetErrorHint(DependencyObject element)
-        {
-            if (element == null) return string.Empty;
-            return (string)element.GetValue(ErrorHintProperty);
-        }
-
-
         #endregion
 
         ISortOrder ViewModel
@@ -137,7 +44,7 @@ namespace FamilyMartUI.UC
             }
         }
 
-        public UCReport()
+        public UCDetail()
         {
             InitializeComponent();
             lvContent.AddHandler(Thumb.DragDeltaEvent, new DragDeltaEventHandler(Thumb_DragDelta), true);
@@ -348,95 +255,13 @@ namespace FamilyMartUI.UC
                 return result;
             }
 
-            ResourceDictionary resDic = Application.Current.Resources;
-            if (resDic.Contains(resName))
+            if (this.Resources.Contains(resName))
             {
-                result = resDic[resName];
+                result = this.Resources[resName];
             }
             return result;
         }
 
         #endregion
-
-        public event EventHandler<EventArgs<DialyReport>> OnSelectionChanged;
-        private void lvContent_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            DialyReport item = lvContent.SelectedItem as DialyReport;
-            if (!OnSelectionChanged.IsNull() && !item.IsNull())
-            {
-                OnSelectionChanged(this, new EventArgs<DialyReport>(item));
-            }
-        }
-    }
-
-    public class EventArgs<T> : EventArgs
-    {
-        public T Content { get; protected set; }
-        public EventArgs(T item)
-        {
-            this.Content = item;
-        }
-    }
-
-    public static class ColumnWidthHelper
-    {
-        /// <summary>
-        /// Min width
-        /// </summary>
-        public static readonly DependencyProperty MinWidthProperty =
-            DependencyProperty.RegisterAttached("MinWidth", typeof(double), typeof(ColumnWidthHelper));
-
-        public static void SetMinWidth(DependencyObject element, double value)
-        {
-            if (element == null)
-                return;
-            element.SetValue(MinWidthProperty, value);
-        }
-
-        public static double GetMinWidth(DependencyObject element)
-        {
-            if (element == null) return 0;
-            return (double)element.GetValue(MinWidthProperty);
-        }
-
-        /// <summary>
-        /// Max width
-        /// </summary>
-        public static readonly DependencyProperty MaxWidthProperty =
-            DependencyProperty.RegisterAttached("MaxWidth", typeof(double), typeof(ColumnWidthHelper));
-
-        public static void SetMaxWidth(DependencyObject element, double value)
-        {
-            if (element == null)
-                return;
-            element.SetValue(MaxWidthProperty, value);
-        }
-
-        public static double GetMaxWidth(DependencyObject element)
-        {
-            if (element == null) return 0;
-            return (double)element.GetValue(MaxWidthProperty);
-        }
-
-
-        /// <summary>
-        /// Sort property name
-        /// </summary>
-        public static readonly DependencyProperty SortPropertyNameProperty =
-            DependencyProperty.RegisterAttached("SortPropertyName", typeof(string), typeof(ColumnWidthHelper));
-
-        public static void SetSortPropertyName(DependencyObject element, string value)
-        {
-            if (element == null)
-                return;
-            element.SetValue(SortPropertyNameProperty, value);
-        }
-
-        public static string GetSortPropertyName(DependencyObject element)
-        {
-            if (element == null) return string.Empty;
-            return (string)element.GetValue(SortPropertyNameProperty);
-        }
-
     }
 }

@@ -10,7 +10,7 @@ namespace DAL.Common
     {
         public static bool IsNullOrEmpty(this string str)
         {
-            return string.IsNullOrEmpty(str);
+            return string.IsNullOrEmpty(str) || string.IsNullOrWhiteSpace(str);
         }
 
         public static bool IsNullOrEmpty<T>(this IEnumerable<T> list)

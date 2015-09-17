@@ -68,11 +68,19 @@ namespace DAL.Common
             {
                 using (var sqlTrans = sqlCon.BeginTransaction())
                 {
-                    cmd.CommandText = sql;
-                    int rowCount = cmd.ExecuteNonQuery();
-                    sqlTrans.Commit();
-                    rowCount = (int)sqlCon.LastInsertRowId;
-                    return rowCount;
+                    try
+                    {
+                        cmd.CommandText = sql;
+                        int rowCount = cmd.ExecuteNonQuery();
+                        sqlTrans.Commit();
+                        rowCount = (int)sqlCon.LastInsertRowId;
+                        return rowCount;
+                    }
+                    catch (System.Exception ex)
+                    {
+                        sqlTrans.Rollback();
+                        throw ex;
+                    }
                 }
             }
         }

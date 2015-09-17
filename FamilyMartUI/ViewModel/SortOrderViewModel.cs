@@ -1,10 +1,21 @@
-﻿using FileExplorer.Helper;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using FamilyMartUI.Common;
+using System.Windows.Data;
 
-namespace FileExplorer.ViewModel
+namespace FamilyMartUI.ViewModel
 {
-    public abstract class SortOrderViewModel : ViewModelBase, ISortOrder
+    public class SortOrderViewModel<T> : ViewModelBase, ISortOrder where T : new()
     {
+        private ObservableCollection<T> items = new ObservableCollection<T>();
+        /// <summary>
+        /// Root items
+        /// </summary>
+        public ObservableCollection<T> Items
+        {
+            get { return items; }
+        }
+
         ICollectionView contentView;
         public ICollectionView ContentView
         {
@@ -13,6 +24,11 @@ namespace FileExplorer.ViewModel
             {
                 SetProperty(ref contentView, value, "ContentView");
             }
+        }
+
+        public SortOrderViewModel()
+        {
+            ContentView = CollectionViewSource.GetDefaultView(this.Items);
         }
 
         #region Sort order
@@ -36,10 +52,6 @@ namespace FileExplorer.ViewModel
             }
         }
 
-        public const string SortPropertyName = "Name";
-        public const string SortPropertyIsFolder = "IsFolder";
-        public const string SortPropertyIsFile = "IsFile";
-
         public void SetSortOrder(string propName, ListSortDirection sortDirection = ListSortDirection.Ascending)
         {
             if (propName.IsNullOrEmpty() || this.ContentView.IsNull())
@@ -59,7 +71,7 @@ namespace FileExplorer.ViewModel
             }
         }
 
-        protected void ClearSortOptions()
+        public void ClearSortOptions()
         {
             if (!this.ContentView.IsNull() && this.ContentView.SortDescriptions.Count > 0)
             {

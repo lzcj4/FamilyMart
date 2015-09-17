@@ -2,6 +2,7 @@
 using System.Windows;
 using DAL;
 using DAL.Model;
+using FamilyMartUI.ViewModel;
 
 namespace FamilyMartUI
 {
@@ -10,15 +11,35 @@ namespace FamilyMartUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ReportViewModel ViewModel
+        {
+            get { return this.DataContext as ReportViewModel; }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
-            this.Loaded += new RoutedEventHandler(MainWindow_Loaded);
-        }
 
+            this.DataContext = new ReportViewModel();
+
+            this.Loaded += MainWindow_Loaded;
+            this.ucDialyReport.OnSelectionChanged += ucDialyReport_OnSelectionChanged;
+            this.ucParser.OnChanged += ucParser_OnChanged;
+        }
+   
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            TestParse();
+            this.ViewModel.LoadAsync();
+        }
+
+        void ucDialyReport_OnSelectionChanged(object sender, UC.EventArgs<DialyReport> e)
+        {
+            this.ViewModel.LoadDetail(e.Content);
+        }
+
+        void ucParser_OnChanged(object sender, System.EventArgs e)
+        {
+            this.ViewModel.LoadAsync();
         }
 
         private void TestParse()
@@ -40,6 +61,8 @@ namespace FamilyMartUI
                     }
                 }
             }
+            //MessageBox.Show(string.Format("成功导入:{0}个文件数据", filePaths.Length));
+            this.ViewModel.LoadAsync();
         }
     }
 }

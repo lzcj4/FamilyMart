@@ -15,6 +15,11 @@ namespace DAL.Model
         public int Id { get; set; }
         public DateTime SaleDate { get; set; }
 
+        public string SaleDateStr
+        {
+            get { return SaleDate.ToString("yyyy-MM-dd"); }
+        }
+
         /// <summary>
         /// 日销
         /// </summary>

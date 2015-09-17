@@ -54,9 +54,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\AndVisibilityConverter.cs" />
+    <Compile Include="Common\BooleanConverter.cs" />
+    <Compile Include="Common\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Common\CommonExtension.cs" />
+    <Compile Include="Common\GridColumnWidthConverter.cs" />
+    <Compile Include="Common\ReverseVisibilityConverter.cs" />
     <Compile Include="UC\UCReport.xaml.cs">
       <DependentUpon>UCReport.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UC\UCDetail.xaml.cs">
+      <DependentUpon>UCDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UC\UCReportParser.xaml.cs">
+      <DependentUpon>UCReportParser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\ReportViewModel.cs" />
+    <Compile Include="ViewModel\ISearch.cs" />
+    <Compile Include="ViewModel\ISortOrder.cs" />
+    <Compile Include="ViewModel\SearchViewModel.cs" />
+    <Compile Include="ViewModel\SortOrderViewModel.cs" />
+    <Compile Include="ViewModel\ViewModelBase.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -69,7 +87,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Resources\ListViewStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UC\UCDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UC\UCReport.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UC\UCReportParser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -102,10 +132,6 @@
     <ProjectReference Include="..\DAL\DAL.csproj">
       <Project>{A54F8AEC-48A8-44C8-A9FC-E68E225B8E62}</Project>
       <Name>DAL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FileExplorer\FileExplorer.csproj">
-      <Project>{76295CD4-637B-4E22-91DF-A13BA52FB79B}</Project>
-      <Name>FileExplorer</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
