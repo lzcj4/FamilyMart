@@ -13,7 +13,8 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <uc:UCReportParser  Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="100,5" x:Name="ucParser"/>
+        <uc:UCReportParser  Grid.Column="0" Grid.Row="0"  Margin="100,5" x:Name="ucParser"/>
+        <uc:UCChart  Grid.Column="1" Grid.Row="0"  Margin="100,5" Width="400" Height="200" />
         <uc:UCReport ContentView="{Binding ContentView}" DataContext="{Binding DialyViewModel}"  Grid.Column="0" Grid.Row="1"  x:Name="ucDialyReport"/>
         <uc:UCDetail ContentView="{Binding ContentView}"  DataContext="{Binding DetailViewModel}" Grid.Column="1"  Grid.Row="1"/>
     </Grid>
