@@ -39,9 +39,9 @@
                 </ListView.Resources>
 
                 <ListView.View>
-                    <GridView x:Name="contentView">
+                    <GridView x:Name="contentView" AllowsColumnReorder="False">
 
-                        <GridViewColumn Width="90" x:Name="colSaleDate"   Header="日期"
+                        <GridViewColumn Width="130" x:Name="colSaleDate"   Header="日期"
                                         HeaderTemplate="{StaticResource AscSortHeaderTemplate}"
                                         self:ColumnWidthHelper.SortPropertyName="SaleDate"
                                         DisplayMemberBinding="{Binding SaleDateStr}"/>
@@ -52,7 +52,7 @@
                                         DisplayMemberBinding="{Binding Amount}"
                                         HeaderTemplate="{StaticResource NormalSortHeaderTemplate}"/>
 
-                        <GridViewColumn x:Name="colCustomer" Header="客户数" Width="80"
+                        <GridViewColumn x:Name="colCustomer" Header="客户数" Width="60"
                                         self:ColumnWidthHelper.MinWidth="50" self:ColumnWidthHelper.MaxWidth="150"
                                         self:ColumnWidthHelper.SortPropertyName="Customer"
                                         DisplayMemberBinding="{Binding Customer}"  
@@ -75,7 +75,7 @@
                                         DisplayMemberBinding="{Binding Employee}"  
                                         HeaderTemplate="{StaticResource NormalSortHeaderTemplate}"/>
 
-                        <GridViewColumn x:Name="colPacking" Width="60" Header="包材"
+                        <GridViewColumn x:Name="colPacking" Width="40" Header="包材"
                                        self:ColumnWidthHelper.MinWidth="0" self:ColumnWidthHelper.MaxWidth="300"
                                        self:ColumnWidthHelper.SortPropertyName="PackingMaterialAmount"
                                        DisplayMemberBinding="{Binding PackingMaterialAmount}" 
@@ -96,8 +96,17 @@
                         <GridViewColumn x:Name="colProblem" Width="200" Header="问题"
                                         self:ColumnWidthHelper.MinWidth="0" self:ColumnWidthHelper.MaxWidth="300"
                                         self:ColumnWidthHelper.SortPropertyName="Problem"
-                                        DisplayMemberBinding="{Binding Problem}"  
-                                        HeaderTemplate="{StaticResource NormalSortHeaderTemplate}"/>
+                                        HeaderTemplate="{StaticResource NormalSortHeaderTemplate}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate >
+                                <StackPanel Orientation="Horizontal" Margin="0,2" >
+                                        <TextBlock Text="{Binding Problem}" VerticalAlignment="Center"  
+                                                   TextTrimming="CharacterEllipsis"
+                                                   ToolTip="{Binding Problem}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
 
                     </GridView>
                 </ListView.View>

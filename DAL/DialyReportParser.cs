@@ -58,6 +58,7 @@ namespace DAL
             }
         }
 
+        static StringBuilder sbInfo = new StringBuilder();
         public static DialyReport Parse(string str)
         {
             if (str.IsNullOrEmpty())
@@ -65,10 +66,17 @@ namespace DAL
                 throw new ArgumentNullException("当前解析报表数据不能为空");
             }
 
+            sbInfo.Clear();
             string[] parts = str.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            if (parts.IsNullOrEmpty() || parts.Count() != 27)
+            if (parts.IsNullOrEmpty())
             {
                 throw new InvalidOperationException("当前解释日商数据非27项，请正确格式化");
+            }
+
+            if (parts.Count() != 27)
+            {
+                sbInfo.AppendLine("当前数据有缺少，非 27 个标准项");
+                Logger.WriteLine("当前数据有缺少，非 27 个标准项");
             }
 
             for (int i = 0; i < parts.Length; i++)
@@ -82,35 +90,36 @@ namespace DAL
             dialyRep.Customer = (int)GetDoubleValue("来客数", parts[2]);
             dialyRep.Waste = GetDoubleValue("报废", parts[3]);
 
-            dialyRep.Details.Add(GetNormalRecord("OC包含果汁", parts[4], dialyRep));
-            dialyRep.Details.Add(GetNormalRecord("中岛柜", parts[5], dialyRep));
-            dialyRep.Details.Add(GetNormalRecord("关东煮", parts[6], dialyRep));
-            dialyRep.Details.Add(GetNormalRecord("蒸包", parts[7], dialyRep));
+            AddNormalRecord("OC包含果汁", parts[4], dialyRep);
+            AddNormalRecord("中岛柜", parts[5], dialyRep);
+            AddNormalRecord("关东煮", parts[6], dialyRep);
+            AddNormalRecord("蒸包", parts[7], dialyRep);
 
-            dialyRep.Details.Add(GetDeliveryRecord("盒饭", parts[8], dialyRep));
-            dialyRep.Details.Add(GetDeliveryRecord("饭团", parts[9], dialyRep));
-            dialyRep.Details.Add(GetDeliveryRecord("三明治", parts[10], dialyRep));
-            dialyRep.Details.Add(GetDeliveryRecord("寿司", parts[11], dialyRep));
-            dialyRep.Details.Add(GetDeliveryRecord("调理面", parts[12], dialyRep));
-            dialyRep.Details.Add(GetDeliveryRecord("面包", parts[13], dialyRep));
+            AddDeliveryRecord("盒饭", parts[8], dialyRep);
+            AddDeliveryRecord("饭团", parts[9], dialyRep);
+            AddDeliveryRecord("三明治", parts[10], dialyRep);
+            AddDeliveryRecord("寿司", parts[11], dialyRep);
+            AddDeliveryRecord("调理面", parts[12], dialyRep);
+            AddDeliveryRecord("面包", parts[13], dialyRep);
 
-            dialyRep.Details.Add(GetNormalRecord("集享卡", parts[14], dialyRep));
-            dialyRep.Details.Add(GetNormalRecord("+2元得康师傅饮品", parts[15], dialyRep));
-            dialyRep.Details.Add(GetNormalRecord("+5元维他椰子水", parts[16], dialyRep));
-            dialyRep.Details.Add(GetNormalRecord("哈根达斯小纸杯", parts[17], dialyRep));
-            dialyRep.Details.Add(GetNormalRecord("冰淇淋", parts[18], dialyRep));
-            dialyRep.Details.Add(GetNormalRecord("咖茶", parts[19], dialyRep));
+            AddNormalRecord("集享卡", parts[14], dialyRep);
+            AddNormalRecord("+2元得康师傅饮品", parts[15], dialyRep);
+            AddNormalRecord("+5元维他椰子水", parts[16], dialyRep);
+            AddNormalRecord("哈根达斯小纸杯", parts[17], dialyRep);
+            AddNormalRecord("冰淇淋", parts[18], dialyRep);
+            AddNormalRecord("咖茶", parts[19], dialyRep);
 
             dialyRep.ParttimeEmployee = GetDoubleValue("兼职", parts[20]);
             dialyRep.Employee = GetDoubleValue("正职", parts[21]);
 
-            dialyRep.Details.Add(GetBoxRecord("物流箱", parts[22], dialyRep));
+            GetBoxRecord("物流箱", parts[22], dialyRep);
 
             dialyRep.PackingMaterialAmount = GetDoubleValue("包材金额", parts[23]);
             dialyRep.ConsumeableAmount = GetDoubleValue("消耗品金额", parts[24]);
             dialyRep.ElectrictCharge = GetDoubleValue("电表度数", parts[25]);
             dialyRep.Problem = GetStrValue("神秘客问题:", parts[26]);
 
+            Logger.Error(sbInfo.ToString());
             return dialyRep;
         }
 
@@ -175,6 +184,7 @@ namespace DAL
             {
                 throw new ArgumentNullException("待解析数据为空");
             }
+
             string content = Replace(str, prefix);
             // amount = FilterInvalidValues(amount);
 
@@ -212,11 +222,17 @@ namespace DAL
             return matchValues;
         }
 
-        private static GoodsRecord GetNormalRecord(string prefix, string str, DialyReport report)
+        private static void AddNormalRecord(string prefix, string str, DialyReport report)
         {
-            if (str.IsNullOrEmpty() || !goodsCache.ContainsKey(prefix))
+            if (str.IsNullOrEmpty())
             {
-                throw new InvalidCastException(string.Format("待解析数据为空或者解释前缀无效:{0}", prefix));
+                throw new InvalidCastException(string.Format("待解析数据为空:{0}", prefix));
+            }
+
+            if (!goodsCache.ContainsKey(prefix))
+            {
+                sbInfo.AppendLine(string.Format("解释前缀无效:{0}", prefix));
+                return;
             }
 
             string strValue = GetStrValue(prefix, str);
@@ -231,14 +247,20 @@ namespace DAL
             result.DialyReport = report;
             double itemValue = GetDoubleValue(prefix, str);
             result.FirstSale = itemValue;
-            return result;
+            report.Details.Add(result);
         }
 
-        private static GoodsRecord GetDeliveryRecord(string prefix, string str, DialyReport report)
+        private static void AddDeliveryRecord(string prefix, string str, DialyReport report)
         {
-            if (str.IsNullOrEmpty() || !goodsCache.ContainsKey(prefix))
+            if (str.IsNullOrEmpty())
             {
-                throw new InvalidCastException(string.Format("待解析数据为空或者解释前缀无效:{0}", prefix));
+                throw new InvalidCastException(string.Format("待解析数据为空:{0}", prefix));
+            }
+
+            if (!goodsCache.ContainsKey(prefix))
+            {
+                sbInfo.AppendLine(string.Format("解释前缀无效:{0}", prefix));
+                return;
             }
 
             string strValue = GetStrValue(prefix, str);
@@ -264,15 +286,20 @@ namespace DAL
                 result.ThirdSale = thirdGroup.Item2;
                 result.ThirdWaste = thirdGroup.Item3;
             }
-
-            return result;
+            report.Details.Add(result);
         }
 
-        private static GoodsRecord GetBoxRecord(string prefix, string str, DialyReport report)
+        private static void GetBoxRecord(string prefix, string str, DialyReport report)
         {
-            if (str.IsNullOrEmpty() || !goodsCache.ContainsKey(prefix))
+            if (str.IsNullOrEmpty())
             {
-                throw new InvalidCastException(string.Format("待解析数据为空或者解释前缀无效:{0}", prefix));
+                throw new InvalidCastException(string.Format("待解析数据为空:{0}", prefix));
+            }
+
+            if (!goodsCache.ContainsKey(prefix))
+            {
+                sbInfo.AppendLine(string.Format("解释前缀无效:{0}", prefix));
+                return;
             }
 
             string strValue = GetStrValue(prefix, str);
@@ -290,7 +317,7 @@ namespace DAL
             result.FirstSale = firstGroup.Item2;
             result.FirstWaste = firstGroup.Item3;
 
-            return result;
+            report.Details.Add(result);
         }
 
         private static Tuple<double, double, double> GetTuple(string str)

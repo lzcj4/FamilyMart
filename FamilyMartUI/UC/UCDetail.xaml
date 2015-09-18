@@ -28,7 +28,7 @@
             <ListView   Name="lvContent"
                          SelectionMode="Single"  ButtonBase.Click="Header_Click" AlternationCount="2"
                          Background="Transparent" BorderBrush="{StaticResource DefaultListBorder}"
-                         ItemsSource="{Binding ContentView,ElementName=ucContent}" Width="673">
+                         ItemsSource="{Binding ContentView,ElementName=ucContent}" >
                 <ListView.Resources>
                     <!-- Below style for removing  scroll bar context menu-->
                     <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource {x:Type ScrollBar}}">
@@ -37,49 +37,49 @@
                 </ListView.Resources>
 
                 <ListView.View>
-                    <GridView x:Name="contentView">
+                    <GridView x:Name="contentView" AllowsColumnReorder="False">
 
-                        <GridViewColumn Width="100" x:Name="colSaleDate"   Header="日期"
+                        <!--<GridViewColumn Width="130" x:Name="colSaleDate"   Header="日期"
                                         HeaderTemplate="{StaticResource AscSortHeaderTemplate}"
                                         self:ColumnWidthHelper.SortPropertyName="SaleDate"
-                                        DisplayMemberBinding="{Binding DialyReport.SaleDateStr}"/>
+                                        DisplayMemberBinding="{Binding DialyReport.SaleDateStr}"/>-->
 
-                        <GridViewColumn x:Name="colAmount"  Header="品名"  Width="120"
+                        <GridViewColumn x:Name="colAmount"  Header="品名"  Width="140"
                                         self:ColumnWidthHelper.MinWidth="80" self:ColumnWidthHelper.MaxWidth="150"
                                         self:ColumnWidthHelper.SortPropertyName="Name" 
                                         DisplayMemberBinding="{Binding Goods.Name}"
                                         HeaderTemplate="{StaticResource NormalSortHeaderTemplate}"/>
 
-                        <GridViewColumn x:Name="colFirstIn" Header="一配进" Width="80"
+                        <GridViewColumn x:Name="colFirstIn" Header="一配进" Width="60"
                                         self:ColumnWidthHelper.MinWidth="50" self:ColumnWidthHelper.MaxWidth="150"
                                         self:ColumnWidthHelper.SortPropertyName="FirstIn"
                                         DisplayMemberBinding="{Binding FirstIn}"  
                                         HeaderTemplate="{StaticResource NormalSortHeaderTemplate}"/>
-                        <GridViewColumn x:Name="colFirstOut"  Header="一配销" Width="80"
+                        <GridViewColumn x:Name="colFirstOut"  Header="一配销" Width="60"
                                          self:ColumnWidthHelper.MinWidth="80" self:ColumnWidthHelper.MaxWidth="150"
                                          self:ColumnWidthHelper.SortPropertyName="FirstSale"
                                          DisplayMemberBinding="{Binding FirstSale}" 
                                         HeaderTemplate="{StaticResource NormalSortHeaderTemplate}"/>
 
-                        <GridViewColumn x:Name="colFirstWaste"  Width="80" Header="一配废"
+                        <GridViewColumn x:Name="colFirstWaste"  Width="60" Header="一配废"
                                         self:ColumnWidthHelper.MinWidth="0" self:ColumnWidthHelper.MaxWidth="300"
                                         self:ColumnWidthHelper.SortPropertyName="FirstWaste"
                                         DisplayMemberBinding="{Binding FirstWaste}"  
                                         HeaderTemplate="{StaticResource NormalSortHeaderTemplate}"/>
 
-                        <GridViewColumn x:Name="colThirdIn" Header="三配进" Width="80"
+                        <GridViewColumn x:Name="colThirdIn" Header="三配进" Width="60"
                                         self:ColumnWidthHelper.MinWidth="50" self:ColumnWidthHelper.MaxWidth="150"
                                         self:ColumnWidthHelper.SortPropertyName="ThirdIn"
                                         DisplayMemberBinding="{Binding ThirdIn}"  
                                         HeaderTemplate="{StaticResource NormalSortHeaderTemplate}"/>
                         
-                        <GridViewColumn x:Name="colThirdOut"  Header="三配销" Width="80"
+                        <GridViewColumn x:Name="colThirdOut"  Header="三配销" Width="60"
                                          self:ColumnWidthHelper.MinWidth="80" self:ColumnWidthHelper.MaxWidth="150"
                                          self:ColumnWidthHelper.SortPropertyName="ThirdSale"
                                          DisplayMemberBinding="{Binding ThirdSale}" 
                                         HeaderTemplate="{StaticResource NormalSortHeaderTemplate}"/>
 
-                        <GridViewColumn x:Name="colThirdWaste"  Width="80" Header="三配废"
+                        <GridViewColumn x:Name="colThirdWaste"  Width="60" Header="三配废"
                                         self:ColumnWidthHelper.MinWidth="0" self:ColumnWidthHelper.MaxWidth="300"
                                         self:ColumnWidthHelper.SortPropertyName="ThirdWaste"
                                         DisplayMemberBinding="{Binding ThirdWaste}"  

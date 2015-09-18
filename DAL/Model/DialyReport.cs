@@ -17,7 +17,30 @@ namespace DAL.Model
 
         public string SaleDateStr
         {
-            get { return SaleDate.ToString("yyyy-MM-dd"); }
+            get { return string.Format("{0} {1}", SaleDate.ToString("yyyy-MM-dd"), GetDayOfWeek(this.SaleDate)); }
+        }
+
+        private string GetDayOfWeek(DateTime dt)
+        {
+            switch (dt.DayOfWeek)
+            {
+                case DayOfWeek.Friday:
+                    return "周五";
+                case DayOfWeek.Monday:
+                    return "周一";
+                case DayOfWeek.Saturday:
+                    return "周六";
+                case DayOfWeek.Sunday:
+                    return "周日";
+                case DayOfWeek.Thursday:
+                    return "周四";
+                case DayOfWeek.Tuesday:
+                    return "周二";
+                case DayOfWeek.Wednesday:
+                    return "周三";
+                default:
+                    return "周一";
+            }
         }
 
         /// <summary>

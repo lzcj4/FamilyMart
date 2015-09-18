@@ -25,7 +25,7 @@ namespace FamilyMartUI.ViewModel
 
         #endregion
 
-        public void LoadAsync()
+        public void LoadAsync(Action callback)
         {
             Action action = () =>
             {
@@ -36,6 +36,10 @@ namespace FamilyMartUI.ViewModel
                     foreach (var item in list)
                     {
                         this.DialyViewModel.Items.Add(item);
+                    }
+                    if (callback != null)
+                    {
+                        callback();
                     }
                 });
             };

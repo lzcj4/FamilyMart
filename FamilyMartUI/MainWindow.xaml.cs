@@ -3,6 +3,7 @@ using System.Windows;
 using DAL;
 using DAL.Model;
 using FamilyMartUI.ViewModel;
+using System.Linq;
 
 namespace FamilyMartUI
 {
@@ -26,10 +27,10 @@ namespace FamilyMartUI
             this.ucDialyReport.OnSelectionChanged += ucDialyReport_OnSelectionChanged;
             this.ucParser.OnChanged += ucParser_OnChanged;
         }
-   
+
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            this.ViewModel.LoadAsync();
+            this.ViewModel.LoadAsync(UpadteStatisticChart);
         }
 
         void ucDialyReport_OnSelectionChanged(object sender, UC.EventArgs<DialyReport> e)
@@ -39,7 +40,30 @@ namespace FamilyMartUI
 
         void ucParser_OnChanged(object sender, System.EventArgs e)
         {
-            this.ViewModel.LoadAsync();
+            this.ViewModel.LoadAsync(UpadteStatisticChart);
+        }
+
+        void UpadteStatisticChart()
+        {
+            var list = this.ViewModel.DialyViewModel.Items;
+            int[] days = list.Select(item => item.SaleDate.Day).ToArray();
+            int[] levels = new int[10];
+            for (int i = 0; i < 10; i++)
+            {
+                levels[i] = (i + 1) * 30;
+            }
+
+            int len = list.Count;
+            double[][] datas = new double[3][];
+
+            datas[0] = list.Select(item => item.Details.FirstOrDefault(subItem => subItem.Goods.Name == "盒饭").FirstIn).ToArray();
+            datas[1] = list.Select(item => item.Details.FirstOrDefault(subItem => subItem.Goods.Name == "盒饭").FirstSale).ToArray();
+            datas[2] = list.Select(item => item.Details.FirstOrDefault(subItem => subItem.Goods.Name == "盒饭").FirstWaste).ToArray();
+
+            ucChart.SetXAxis(days);
+            ucChart.SetYAxis(levels);
+            ucChart.SetData(datas);
+            ucChart.InvalidateVisual();
         }
 
         private void TestParse()
@@ -62,7 +86,7 @@ namespace FamilyMartUI
                 }
             }
             //MessageBox.Show(string.Format("成功导入:{0}个文件数据", filePaths.Length));
-            this.ViewModel.LoadAsync();
+            //this.ViewModel.LoadAsync();
         }
     }
 }
