@@ -117,7 +117,7 @@ namespace DAL
             dialyRep.PackingMaterialAmount = GetDoubleValue("包材金额", parts[23]);
             dialyRep.ConsumeableAmount = GetDoubleValue("消耗品金额", parts[24]);
             dialyRep.ElectrictCharge = GetDoubleValue("电表度数", parts[25]);
-            dialyRep.Problem = GetStrValue("神秘客问题:", parts[26]);
+            dialyRep.Problem = GetStrValue("神秘客问题", parts[26]);
 
             Logger.Error(sbInfo.ToString());
             return dialyRep;
@@ -212,7 +212,7 @@ namespace DAL
             {
                 throw new ArgumentNullException("待解析数据为空");
             }
-            string result = Replace(str, prefix);
+            string result = Replace(str, prefix).Trim(new char[]{':','.',',',' '});
             return result;
         }
 

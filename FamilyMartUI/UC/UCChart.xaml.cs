@@ -42,23 +42,18 @@ namespace FamilyMartUI.UC
         private double[][] dataArray = new double[][]{ new double[] { 15, 23, 56, 34, 20, 44, 2 }, 
                                           new double[]{ 3, 60, 29, 23, 56, 34, 23 },
                                           new double[]{ 63, 12, 69, 3, 32, 45, 33 }};
+        DateTime[] xPointsDates = { };
         private string fontFace = "Segoe UI";
 
         Pen[] linePens = { new Pen(Brushes.Green, lineWidth), new Pen(Brushes.Blue, lineWidth), new Pen(Brushes.Red, lineWidth), };
 
-        public void SetXAxis(int[] points)
+        public void SetXYAxisAndData(DateTime[] xDates, int[] yPoints, double[][] data)
         {
-            xPoints = points;
-        }
-
-        public void SetYAxis(int[] points)
-        {
-            yPoints = points;
-        }
-
-        public void SetData(double[][] points)
-        {
-            dataArray = points;
+            this.xPointsDates = xDates;
+            this.xPoints = xDates.Select(item => item.Day).ToArray();
+            this.yPoints = yPoints;
+            this.dataArray = data;
+            this.InvalidateVisual();
         }
 
         private FormattedText GetFormattedText(string str)
@@ -76,7 +71,8 @@ namespace FamilyMartUI.UC
         protected override void OnRender(DrawingContext dc)
         {
             base.OnRender(dc);
-            if (xPoints.IsNullOrEmpty() || yPoints.IsNullOrEmpty() || dataArray.IsNullOrEmpty())
+            if (xPoints.IsNullOrEmpty() || yPoints.IsNullOrEmpty() ||
+                dataArray.IsNullOrEmpty() || xPointsDates.IsNullOrEmpty())
             {
                 return;
             }
@@ -104,7 +100,10 @@ namespace FamilyMartUI.UC
             for (int i = 0; i < xPoints.Length; i++, j++)
             {
                 double startX = xOffset + j * xStep;
-                FormattedText ft = GetFormattedText(xPoints[i].ToString());
+                DateTime itemDate = xPointsDates[i];
+                FormattedText ft = GetFormattedText(xPoints[i].ToString(), 
+                                                   (itemDate.DayOfWeek == DayOfWeek.Sunday || 
+                                                    itemDate.DayOfWeek == DayOfWeek.Saturday) ? Brushes.Red : Brushes.Black);
                 if (i == xPoints.Length - 1)
                 {
                     //arrow
@@ -130,7 +129,7 @@ namespace FamilyMartUI.UC
                 {
                     dc.DrawLine(arrowPen, new Point(xOffset + flagHeight, flagHeight * 3),
                                 new Point(xOffset, flagHeight));
-                    dc.DrawText(ft, new Point(yMaxFT.Width / 2, canvasHeight - startY - ft.Height / 4));
+                    dc.DrawText(ft, new Point(yMaxFT.Width / 2, canvasHeight - startY - ft.Height /2));
                 }
                 else
                 {

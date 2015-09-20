@@ -11,6 +11,7 @@
         <helper:GridColumnWidthConverter x:Key="gridViewWidthConverter" />
         <helper:AndVisibilityConverter x:Key="andVisibilityConverter" />
         <helper:ReverseBoolConverter x:Key="reverseBoolConverter" />
+        <helper:DayOfWeekForegroundConverter x:Key="dayOfWeekForegroundConverter" />
 
         <Style TargetType="TextBlock">
             <Setter Property="Text" Value="{Binding}"/>
@@ -20,7 +21,7 @@
         </Style>
 
         <SolidColorBrush x:Key="DefaultListBorder" Color="#88828790"/>
-        
+
     </UserControl.Resources>
 
     <Grid>
@@ -43,8 +44,17 @@
 
                         <GridViewColumn Width="130" x:Name="colSaleDate"   Header="日期"
                                         HeaderTemplate="{StaticResource AscSortHeaderTemplate}"
-                                        self:ColumnWidthHelper.SortPropertyName="SaleDate"
-                                        DisplayMemberBinding="{Binding SaleDateStr}"/>
+                                        self:ColumnWidthHelper.SortPropertyName="SaleDate">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate >
+                                    <StackPanel Orientation="Horizontal" Margin="0,2" >
+                                        <TextBlock Text="{Binding SaleDateStr}" VerticalAlignment="Center"  
+                                                   TextTrimming="CharacterEllipsis" FontSize="15"
+                                                   Foreground="{Binding Path=SaleDate,Converter={StaticResource dayOfWeekForegroundConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
 
                         <GridViewColumn x:Name="colAmount"  Header="营业额"  Width="80"
                                         self:ColumnWidthHelper.MinWidth="80" self:ColumnWidthHelper.MaxWidth="150"
@@ -60,34 +70,42 @@
                         <GridViewColumn x:Name="colWaste"  Header="损耗" Width="60"
                                          self:ColumnWidthHelper.MinWidth="80" self:ColumnWidthHelper.MaxWidth="150"
                                          self:ColumnWidthHelper.SortPropertyName="Waste"
-                                         DisplayMemberBinding="{Binding Waste}" 
-                                        HeaderTemplate="{StaticResource NormalSortHeaderTemplate}"/>
+                                         HeaderTemplate="{StaticResource NormalSortHeaderTemplate}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate >
+                                    <StackPanel Orientation="Horizontal" Margin="0,2" >
+                                        <TextBlock Text="{Binding Waste}" VerticalAlignment="Center"  FontSize="15"
+                                                   Foreground="{Binding Path=Waste,Converter={StaticResource overRangeWarnConverter},ConverterParameter=300}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
 
-                        <GridViewColumn x:Name="colParttime"  Width="60" Header="兼职"
+                        <GridViewColumn x:Name="colParttime"  Width="50" Header="兼职"
                                         self:ColumnWidthHelper.MinWidth="0" self:ColumnWidthHelper.MaxWidth="300"
                                         self:ColumnWidthHelper.SortPropertyName="ParttimeEmployee"
                                         DisplayMemberBinding="{Binding ParttimeEmployee}"  
                                         HeaderTemplate="{StaticResource NormalSortHeaderTemplate}"/>
 
-                        <GridViewColumn x:Name="colEmployee" Width="60" Header="正职"
+                        <GridViewColumn x:Name="colEmployee" Width="50" Header="正职"
                                         self:ColumnWidthHelper.MinWidth="0" self:ColumnWidthHelper.MaxWidth="300"
                                         self:ColumnWidthHelper.SortPropertyName="Employee"
                                         DisplayMemberBinding="{Binding Employee}"  
                                         HeaderTemplate="{StaticResource NormalSortHeaderTemplate}"/>
 
-                        <GridViewColumn x:Name="colPacking" Width="40" Header="包材"
+                        <GridViewColumn x:Name="colPacking" Width="50" Header="包材"
                                        self:ColumnWidthHelper.MinWidth="0" self:ColumnWidthHelper.MaxWidth="300"
                                        self:ColumnWidthHelper.SortPropertyName="PackingMaterialAmount"
                                        DisplayMemberBinding="{Binding PackingMaterialAmount}" 
                                         HeaderTemplate="{StaticResource NormalSortHeaderTemplate}"/>
 
-                        <GridViewColumn x:Name="colConsumeable" Width="60" Header="易耗品"
+                        <GridViewColumn x:Name="colConsumeable" Width="50" Header="易耗品"
                                         self:ColumnWidthHelper.MinWidth="0" self:ColumnWidthHelper.MaxWidth="300"
                                         self:ColumnWidthHelper.SortPropertyName="ConsumeableAmount"
                                         DisplayMemberBinding="{Binding ConsumeableAmount}"  
                                         HeaderTemplate="{StaticResource NormalSortHeaderTemplate}"/>
 
-                        <GridViewColumn x:Name="colEletric" Width="60" Header="电表数"
+                        <GridViewColumn x:Name="colEletric" Width="50" Header="电表数"
                                         self:ColumnWidthHelper.MinWidth="0" self:ColumnWidthHelper.MaxWidth="300"
                                         self:ColumnWidthHelper.SortPropertyName="ElectrictCharge"
                                         DisplayMemberBinding="{Binding ElectrictCharge}"
@@ -97,15 +115,15 @@
                                         self:ColumnWidthHelper.MinWidth="0" self:ColumnWidthHelper.MaxWidth="300"
                                         self:ColumnWidthHelper.SortPropertyName="Problem"
                                         HeaderTemplate="{StaticResource NormalSortHeaderTemplate}">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate >
-                                <StackPanel Orientation="Horizontal" Margin="0,2" >
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate >
+                                    <StackPanel Orientation="Horizontal" Margin="0,2" >
                                         <TextBlock Text="{Binding Problem}" VerticalAlignment="Center"  
-                                                   TextTrimming="CharacterEllipsis"
+                                                   TextTrimming="CharacterEllipsis" FontSize="15"
                                                    ToolTip="{Binding Problem}"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
                     </GridView>

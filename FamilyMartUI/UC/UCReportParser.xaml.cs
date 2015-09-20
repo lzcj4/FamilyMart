@@ -48,28 +48,36 @@ namespace FamilyMartUI.UC
             string[] filePaths = openDlg.FileNames;
             bool isExisted = false;
 
-            //Directory.GetFiles(@"E:\FM Record", "*");
-            foreach (string item in filePaths)
+            Action action = new Action(() =>
             {
-                using (FileStream fs = new FileStream(item, FileMode.Open))
+                //Directory.GetFiles(@"E:\FM Record", "*");
+                foreach (string item in filePaths)
                 {
-                    using (StreamReader sr = new StreamReader(fs))
+                    using (FileStream fs = new FileStream(item, FileMode.Open))
                     {
-                        string s = sr.ReadToEnd();
-                        var v = DialyReportParser.Parse(s);
-                        if (v != null)
+                        using (StreamReader sr = new StreamReader(fs))
                         {
-                            dbHelper.InsertDialyReport(v);
-                            isExisted = true;
+                            string s = sr.ReadToEnd();
+                            var v = DialyReportParser.Parse(s);
+                            if (v != null)
+                            {
+                                dbHelper.InsertDialyReport(v);
+                                isExisted = true;
+                            }
                         }
                     }
                 }
-            }
 
-            if (isExisted && OnChanged != null)
-            {
-                OnChanged(this, new EventArgs());
-            }
+                this.Dispatcher.BeginInvoke((Delegate)new Action(() =>
+                {
+                    if (isExisted && OnChanged != null)
+                    {
+                        OnChanged(this, new EventArgs());
+                    }
+                }));
+
+            });
+            action.BeginInvoke((ar) => { action.EndInvoke(ar); }, action);
         }
     }
 }

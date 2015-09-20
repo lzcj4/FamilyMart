@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace FamilyMartUI.Common
 {
@@ -17,6 +18,28 @@ namespace FamilyMartUI.Common
                 return 0;
 
             return width - offset;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class DayOfWeekForegroundConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value == null || !(value is DateTime))
+                return Brushes.Black;
+
+            DateTime date = (DateTime)value;
+            Brush result = Brushes.Black;
+            if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+            {
+                result = Brushes.Red;
+            }
+            return result;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

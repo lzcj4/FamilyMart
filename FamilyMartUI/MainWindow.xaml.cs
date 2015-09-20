@@ -4,6 +4,7 @@ using DAL;
 using DAL.Model;
 using FamilyMartUI.ViewModel;
 using System.Linq;
+using System;
 
 namespace FamilyMartUI
 {
@@ -46,24 +47,20 @@ namespace FamilyMartUI
         void UpadteStatisticChart()
         {
             var list = this.ViewModel.DialyViewModel.Items;
-            int[] days = list.Select(item => item.SaleDate.Day).ToArray();
+           DateTime[] datetimes = list.Select(item => item.SaleDate).ToArray();
             int[] levels = new int[10];
             for (int i = 0; i < 10; i++)
             {
                 levels[i] = (i + 1) * 30;
             }
 
-            int len = list.Count;
             double[][] datas = new double[3][];
 
             datas[0] = list.Select(item => item.Details.FirstOrDefault(subItem => subItem.Goods.Name == "盒饭").FirstIn).ToArray();
             datas[1] = list.Select(item => item.Details.FirstOrDefault(subItem => subItem.Goods.Name == "盒饭").FirstSale).ToArray();
             datas[2] = list.Select(item => item.Details.FirstOrDefault(subItem => subItem.Goods.Name == "盒饭").FirstWaste).ToArray();
 
-            ucChart.SetXAxis(days);
-            ucChart.SetYAxis(levels);
-            ucChart.SetData(datas);
-            ucChart.InvalidateVisual();
+            ucChart.SetXYAxisAndData(datetimes,levels,datas);
         }
 
         private void TestParse()

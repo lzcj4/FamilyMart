@@ -59,6 +59,7 @@
     <Compile Include="Common\BooleanToVisibilityConverter.cs" />
     <Compile Include="Common\CommonExtension.cs" />
     <Compile Include="Common\GridColumnWidthConverter.cs" />
+    <Compile Include="Common\OverRangeWarnConverter.cs" />
     <Compile Include="Common\ReverseVisibilityConverter.cs" />
     <Compile Include="UC\UCChart.xaml.cs">
       <DependentUpon>UCChart.xaml</DependentUpon>
@@ -90,6 +91,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Resources\Converters.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\ListViewStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
