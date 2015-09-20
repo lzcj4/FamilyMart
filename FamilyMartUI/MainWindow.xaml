@@ -13,7 +13,15 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <uc:UCReportParser  Grid.Column="0" Grid.Row="0"  Margin="100,5" x:Name="ucParser"/>
+        <Grid Grid.Column="0" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <uc:UCReportParser Grid.Column="0" x:Name="ucParser"  />
+            <uc:UCQuery   Grid.Column="1" x:Name="ucQuery"/>
+        </Grid>
+       
         <uc:MyCanvas  Grid.Column="1" Margin="0,0,50,0"  x:Name="ucChart" />
         <uc:UCReport ContentView="{Binding ContentView}" DataContext="{Binding DialyViewModel}" 
                      Grid.Column="0" Grid.Row="1"  x:Name="ucDialyReport" Margin="5"/>

@@ -64,6 +64,9 @@
     <Compile Include="UC\UCChart.xaml.cs">
       <DependentUpon>UCChart.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UC\UCQuery.xaml.cs">
+      <DependentUpon>UCQuery.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UC\UCReport.xaml.cs">
       <DependentUpon>UCReport.xaml</DependentUpon>
     </Compile>
@@ -104,6 +107,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UC\UCDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UC\UCQuery.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
