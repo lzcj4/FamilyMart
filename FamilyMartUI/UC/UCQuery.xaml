@@ -13,7 +13,7 @@
             <Setter Property="GroupName" Value="Statistic"/>
         </Style>
     </UserControl.Resources>
-    <Grid>
+    <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>

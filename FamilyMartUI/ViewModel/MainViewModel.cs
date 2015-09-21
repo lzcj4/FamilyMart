@@ -47,6 +47,7 @@ namespace FamilyMartUI.ViewModel
                     {
                         this.DialyViewModel.Items.Add(item);
                     }
+                    this.DialyViewModel.ContentView.MoveCurrentToFirst();
                     if (callback != null)
                     {
                         callback();
@@ -57,11 +58,11 @@ namespace FamilyMartUI.ViewModel
             action.BeginInvoke((ar) => { action.EndInvoke(ar); }, this);
         }
 
-        public void LoadAsync(string startDate,string endDate,Action callback)
+        public void LoadAsync(string startDate, string endDate, Action callback)
         {
             Action action = () =>
             {
-                var list = FMDBHelper.Instance.GetDialyReport(startDate,endDate);
+                var list = FMDBHelper.Instance.GetDialyReport(startDate, endDate);
                 this.RunOnUIThreadAsync(() =>
                 {
                     this.DialyViewModel.Items.Clear();

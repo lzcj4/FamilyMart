@@ -212,7 +212,9 @@ namespace DAL
             {
                 throw new ArgumentNullException("待解析数据为空");
             }
-            string result = Replace(str, prefix).Trim(new char[]{':','.',',',' '});
+            string result = Replace(str, prefix).Replace(':', ' ').Replace(',', ' ')
+                                                .Replace('，', ' ').Replace('。', ' ')
+                                                .Trim(new char[] { ',', ':', '.' });
             return result;
         }
 

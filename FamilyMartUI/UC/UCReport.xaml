@@ -23,8 +23,7 @@
                          SelectionMode="Extended"  ButtonBase.Click="Header_Click" AlternationCount="2"
                          Background="Transparent" 
                          ItemsSource="{Binding ContentView,ElementName=ucContent}"
-                         SelectionChanged="lvContent_SelectionChanged"
-                        >
+                         SelectionChanged="lvContent_SelectionChanged" IsSynchronizedWithCurrentItem="True">
                 <ListView.Resources>
                     <!-- Below style for removing  scroll bar context menu-->
                     <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource {x:Type ScrollBar}}">

@@ -101,7 +101,7 @@ namespace DAL.Model
 
         public IEnumerable<DialyReport> GetDialyReport()
         {
-            return GetDialyReport(sqlSelectDialyReport + "  order by SaleDate asc");
+            return GetDialyReport(sqlSelectDialyReport + "  order by SaleDate desc");
         }
 
         public IEnumerable<DialyReport> GetDialyReport(string startDate, string endDate)
