@@ -7,7 +7,7 @@ using FamilyMartUI.Common;
 
 namespace FamilyMartUI.ViewModel
 {
-    public class ReportViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase
     {
         #region Properties
 
@@ -23,13 +23,45 @@ namespace FamilyMartUI.ViewModel
             get { return detailViewModel; }
         }
 
+        QueryViewModel queryViewModel = new QueryViewModel();
+        public QueryViewModel QueryViewModel
+        {
+            get { return queryViewModel; }
+        }
+
         #endregion
+
+        public MainViewModel()
+        {
+        }
 
         public void LoadAsync(Action callback)
         {
             Action action = () =>
             {
                 var list = FMDBHelper.Instance.GetDialyReport();
+                this.RunOnUIThreadAsync(() =>
+                {
+                    this.DialyViewModel.Items.Clear();
+                    foreach (var item in list)
+                    {
+                        this.DialyViewModel.Items.Add(item);
+                    }
+                    if (callback != null)
+                    {
+                        callback();
+                    }
+                });
+            };
+
+            action.BeginInvoke((ar) => { action.EndInvoke(ar); }, this);
+        }
+
+        public void LoadAsync(string startDate,string endDate,Action callback)
+        {
+            Action action = () =>
+            {
+                var list = FMDBHelper.Instance.GetDialyReport(startDate,endDate);
                 this.RunOnUIThreadAsync(() =>
                 {
                     this.DialyViewModel.Items.Clear();

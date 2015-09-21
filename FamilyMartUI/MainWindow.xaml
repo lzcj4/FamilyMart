@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:uc="clr-namespace:FamilyMartUI.UC"
-        Title="MainWindow" Height="600" Width="1200">
+        Title="MainWindow" Height="800" Width="1400">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -15,14 +15,14 @@
 
         <Grid Grid.Column="0" Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <uc:UCReportParser Grid.Column="0" x:Name="ucParser"  />
             <uc:UCQuery   Grid.Column="1" x:Name="ucQuery"/>
         </Grid>
        
-        <uc:MyCanvas  Grid.Column="1" Margin="0,0,50,0"  x:Name="ucChart" />
+        <uc:MyCanvas  Grid.Column="1" Margin="0,0,30,0"  x:Name="ucChart" />
         <uc:UCReport ContentView="{Binding ContentView}" DataContext="{Binding DialyViewModel}" 
                      Grid.Column="0" Grid.Row="1"  x:Name="ucDialyReport" Margin="5"/>
         <uc:UCDetail ContentView="{Binding ContentView}"  DataContext="{Binding DetailViewModel}"

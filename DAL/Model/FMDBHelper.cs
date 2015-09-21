@@ -104,6 +104,12 @@ namespace DAL.Model
             return GetDialyReport(sqlSelectDialyReport + "  order by SaleDate asc");
         }
 
+        public IEnumerable<DialyReport> GetDialyReport(string startDate, string endDate)
+        {
+            return GetDialyReport(sqlSelectDialyReport + string.Format(" where SaleDate >='{0}' and SaleDate<='{1}'", startDate, endDate) +
+                                  "  order by SaleDate asc");
+        }
+
         private DialyReport GetDialyReport(SQLiteDataReader reader)
         {
             DialyReport item = new DialyReport();

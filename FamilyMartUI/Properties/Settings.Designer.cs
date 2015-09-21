@@ -22,5 +22,125 @@ namespace FamilyMartUI.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3000")]
+        public int Amount {
+            get {
+                return ((int)(this["Amount"]));
+            }
+            set {
+                this["Amount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public int Customer {
+            get {
+                return ((int)(this["Customer"]));
+            }
+            set {
+                this["Customer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("80")]
+        public int Waste {
+            get {
+                return ((int)(this["Waste"]));
+            }
+            set {
+                this["Waste"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int WorkHours {
+            get {
+                return ((int)(this["WorkHours"]));
+            }
+            set {
+                this["WorkHours"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("60")]
+        public int Electric {
+            get {
+                return ((int)(this["Electric"]));
+            }
+            set {
+                this["Electric"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        public int BoxLaunch {
+            get {
+                return ((int)(this["BoxLaunch"]));
+            }
+            set {
+                this["BoxLaunch"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("35")]
+        public int Bread {
+            get {
+                return ((int)(this["Bread"]));
+            }
+            set {
+                this["Bread"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public int Noodel {
+            get {
+                return ((int)(this["Noodel"]));
+            }
+            set {
+                this["Noodel"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int RiceRoll {
+            get {
+                return ((int)(this["RiceRoll"]));
+            }
+            set {
+                this["RiceRoll"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int SuShi {
+            get {
+                return ((int)(this["SuShi"]));
+            }
+            set {
+                this["SuShi"] = value;
+            }
+        }
     }
 }

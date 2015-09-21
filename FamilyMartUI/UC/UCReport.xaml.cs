@@ -377,7 +377,16 @@ namespace FamilyMartUI.UC
             this.Content = item;
         }
     }
-
+    public class EventArgs<T1, T2> : EventArgs
+    {
+        public T1 Item1 { get; protected set; }
+        public T2 Item2 { get; protected set; }
+        public EventArgs(T1 item1, T2 item2)
+        {
+            this.Item1 = item1;
+            this.Item2 = item2;
+        }
+    }
     public static class ColumnWidthHelper
     {
         /// <summary>

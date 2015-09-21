@@ -7,11 +7,6 @@
              xmlns:self="clr-namespace:FamilyMartUI.UC">
 
     <UserControl.Resources>
-        <helper:ReverseVisibilityConverter x:Key="reverseVisibilityConverter"/>
-        <helper:GridColumnWidthConverter x:Key="gridViewWidthConverter" />
-        <helper:AndVisibilityConverter x:Key="andVisibilityConverter" />
-        <helper:ReverseBoolConverter x:Key="reverseBoolConverter" />
-        <helper:DayOfWeekForegroundConverter x:Key="dayOfWeekForegroundConverter" />
 
         <Style TargetType="TextBlock">
             <Setter Property="Text" Value="{Binding}"/>
@@ -20,15 +15,13 @@
             <Setter Property="FontSize" Value="15"/>
         </Style>
 
-        <SolidColorBrush x:Key="DefaultListBorder" Color="#88828790"/>
-
     </UserControl.Resources>
 
     <Grid>
         <Grid Grid.Row="0">
             <ListView  Margin="0,0,2,0" Name="lvContent"
                          SelectionMode="Extended"  ButtonBase.Click="Header_Click" AlternationCount="2"
-                         Background="Transparent" BorderBrush="{StaticResource DefaultListBorder}"
+                         Background="Transparent" 
                          ItemsSource="{Binding ContentView,ElementName=ucContent}"
                          SelectionChanged="lvContent_SelectionChanged"
                         >
@@ -58,9 +51,17 @@
 
                         <GridViewColumn x:Name="colAmount"  Header="营业额"  Width="80"
                                         self:ColumnWidthHelper.MinWidth="80" self:ColumnWidthHelper.MaxWidth="150"
-                                        self:ColumnWidthHelper.SortPropertyName="Amount" 
-                                        DisplayMemberBinding="{Binding Amount}"
-                                        HeaderTemplate="{StaticResource NormalSortHeaderTemplate}"/>
+                                        self:ColumnWidthHelper.SortPropertyName="Amount"
+                                        HeaderTemplate="{StaticResource NormalSortHeaderTemplate}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate >
+                                    <StackPanel Orientation="Horizontal" Margin="0,2" >
+                                        <TextBlock Text="{Binding Amount}" VerticalAlignment="Center"  FontSize="15"
+                                                   Foreground="{Binding Path=Amount,Converter={StaticResource overRangeWarnConverter},ConverterParameter=20000}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
 
                         <GridViewColumn x:Name="colCustomer" Header="客户数" Width="60"
                                         self:ColumnWidthHelper.MinWidth="50" self:ColumnWidthHelper.MaxWidth="150"
@@ -108,8 +109,16 @@
                         <GridViewColumn x:Name="colEletric" Width="50" Header="电表数"
                                         self:ColumnWidthHelper.MinWidth="0" self:ColumnWidthHelper.MaxWidth="300"
                                         self:ColumnWidthHelper.SortPropertyName="ElectrictCharge"
-                                        DisplayMemberBinding="{Binding ElectrictCharge}"
-                                        HeaderTemplate="{StaticResource NormalSortHeaderTemplate}"/>
+                                        HeaderTemplate="{StaticResource NormalSortHeaderTemplate}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate >
+                                    <StackPanel Orientation="Horizontal" Margin="0,2" >
+                                        <TextBlock Text="{Binding ElectrictCharge}" VerticalAlignment="Center"  FontSize="15"
+                                                   Foreground="{Binding Path=ElectrictCharge,Converter={StaticResource overRangeWarnConverter},ConverterParameter=500}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
 
                         <GridViewColumn x:Name="colProblem" Width="200" Header="问题"
                                         self:ColumnWidthHelper.MinWidth="0" self:ColumnWidthHelper.MaxWidth="300"

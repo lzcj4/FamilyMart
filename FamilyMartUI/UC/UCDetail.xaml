@@ -6,101 +6,91 @@
              xmlns:model="clr-namespace:DAL.Model;assembly=DAL"
              xmlns:self="clr-namespace:FamilyMartUI.UC">
 
-  <UserControl.Resources>
-    <helper:ReverseVisibilityConverter x:Key="reverseVisibilityConverter"/>
-    <helper:GridColumnWidthConverter x:Key="gridViewWidthConverter" />
-    <helper:AndVisibilityConverter x:Key="andVisibilityConverter" />
-    <helper:ReverseBoolConverter x:Key="reverseBoolConverter" />
+    <UserControl.Resources>
 
-    <Style TargetType="TextBlock">
-      <Setter Property="Text" Value="{Binding}"/>
-      <Setter Property="VerticalAlignment" Value="Center"/>
-      <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
-      <Setter Property="FontSize" Value="15"/>
-    </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Text" Value="{Binding}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
 
-    <Style TargetType="Border">
-      <Setter Property="BorderThickness" Value="5"/>
-    </Style>
+    </UserControl.Resources>
 
-    <SolidColorBrush x:Key="DefaultListBorder" Color="#88828790"/>
-
-  </UserControl.Resources>
-
-  <Grid>
-    <Grid Grid.Row="0">
-      <ListView   Name="lvContent"
+    <Grid>
+        <Grid Grid.Row="0">
+            <ListView   Name="lvContent"
                    SelectionMode="Single"  ButtonBase.Click="Header_Click" AlternationCount="2"
-                   Background="Transparent" BorderBrush="{StaticResource DefaultListBorder}"
+                   Background="Transparent" 
                    ItemsSource="{Binding ContentView,ElementName=ucContent}" >
-        <ListView.Resources>
-          <!-- Below style for removing  scroll bar context menu-->
-          <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource {x:Type ScrollBar}}">
-            <Setter Property="ContextMenu" Value="{x:Null}"/>
-          </Style>
-        </ListView.Resources>
+                <ListView.Resources>
+                    <!-- Below style for removing  scroll bar context menu-->
+                    <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource {x:Type ScrollBar}}">
+                        <Setter Property="ContextMenu" Value="{x:Null}"/>
+                    </Style>
+                </ListView.Resources>
 
-        <ListView.View>
-          <GridView x:Name="contentView" AllowsColumnReorder="False">
+                <ListView.View>
+                    <GridView x:Name="contentView" AllowsColumnReorder="False">
 
-            <!--<GridViewColumn Width="130" x:Name="colSaleDate"   Header="日期"
+                        <!--<GridViewColumn Width="130" x:Name="colSaleDate"   Header="日期"
                                         HeaderTemplate="{StaticResource AscSortHeaderTemplate}"
                                         self:ColumnWidthHelper.SortPropertyName="SaleDate"
                                         DisplayMemberBinding="{Binding DialyReport.SaleDateStr}"/>-->
 
-            <GridViewColumn x:Name="colAmount"  Header="品名"  Width="140"
+                        <GridViewColumn x:Name="colAmount"  Header="品名"  Width="140"
                             self:ColumnWidthHelper.MinWidth="80" self:ColumnWidthHelper.MaxWidth="150"
                             self:ColumnWidthHelper.SortPropertyName="Name"
                             DisplayMemberBinding="{Binding Goods.Name}"
                             HeaderTemplate="{StaticResource NormalSortHeaderTemplate}"/>
 
-            <GridViewColumn x:Name="colFirstIn" Header="一配进" Width="60"
+                        <GridViewColumn x:Name="colFirstIn" Header="一配进" Width="60"
                             self:ColumnWidthHelper.MinWidth="50" self:ColumnWidthHelper.MaxWidth="150"
                             self:ColumnWidthHelper.SortPropertyName="FirstIn"
                             DisplayMemberBinding="{Binding FirstIn}"
                             HeaderTemplate="{StaticResource NormalSortHeaderTemplate}"/>
-            <GridViewColumn x:Name="colFirstOut"  Header="一配销" Width="60"
+                        <GridViewColumn x:Name="colFirstOut"  Header="一配销" Width="60"
                              self:ColumnWidthHelper.MinWidth="80" self:ColumnWidthHelper.MaxWidth="150"
                              self:ColumnWidthHelper.SortPropertyName="FirstSale"
                              DisplayMemberBinding="{Binding FirstSale}"
                             HeaderTemplate="{StaticResource NormalSortHeaderTemplate}"/>
 
-            <GridViewColumn x:Name="colFirstWaste"  Width="60" Header="一配废"
+                        <GridViewColumn x:Name="colFirstWaste"  Width="60" Header="一配废"
                             self:ColumnWidthHelper.MinWidth="0" self:ColumnWidthHelper.MaxWidth="300"
-                            self:ColumnWidthHelper.SortPropertyName="FirstWaste"
+                            self:ColumnWidthHelper.SortPropertyName="FirstWaste"                           
                             HeaderTemplate="{StaticResource NormalSortHeaderTemplate}">
-              <GridViewColumn.CellTemplate>
-                <DataTemplate >
-                  <StackPanel Orientation="Horizontal" Margin="0,2" >
-                    <TextBlock Text="{Binding FirstWaste}" VerticalAlignment="Center" FontSize="15"
-                               Foreground="{Binding Path=FirstWaste,Converter={StaticResource overRangeWarnConverter},ConverterParameter=20}"/>
-                  </StackPanel>
-                </DataTemplate>
-              </GridViewColumn.CellTemplate>
-            </GridViewColumn>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate >
+                                    <StackPanel Orientation="Horizontal" Margin="0,2">
+                                        <TextBlock Text="{Binding FirstWaste}" VerticalAlignment="Center" FontSize="15"
+                                                   Foreground="{Binding Path=FirstWaste,Converter={StaticResource overRangeWarnConverter},ConverterParameter=20}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
 
-            <GridViewColumn x:Name="colThirdIn" Header="三配进" Width="60"
+                        <GridViewColumn x:Name="colThirdIn" Header="三配进" Width="60"
                             self:ColumnWidthHelper.MinWidth="50" self:ColumnWidthHelper.MaxWidth="150"
                             self:ColumnWidthHelper.SortPropertyName="ThirdIn"
                             DisplayMemberBinding="{Binding ThirdIn}"
                             HeaderTemplate="{StaticResource NormalSortHeaderTemplate}"/>
 
-            <GridViewColumn x:Name="colThirdOut"  Header="三配销" Width="60"
+                        <GridViewColumn x:Name="colThirdOut"  Header="三配销" Width="60"
                              self:ColumnWidthHelper.MinWidth="80" self:ColumnWidthHelper.MaxWidth="150"
                              self:ColumnWidthHelper.SortPropertyName="ThirdSale"
                              DisplayMemberBinding="{Binding ThirdSale}"
                             HeaderTemplate="{StaticResource NormalSortHeaderTemplate}"/>
 
-            <GridViewColumn x:Name="colThirdWaste"  Width="60" Header="三配废"
+                        <GridViewColumn x:Name="colThirdWaste"  Width="60" Header="三配废"
                             self:ColumnWidthHelper.MinWidth="0" self:ColumnWidthHelper.MaxWidth="300"
                             self:ColumnWidthHelper.SortPropertyName="ThirdWaste"
                             DisplayMemberBinding="{Binding ThirdWaste}"
                             HeaderTemplate="{StaticResource NormalSortHeaderTemplate}"/>
 
 
-          </GridView>
-        </ListView.View>
-      </ListView>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
     </Grid>
-  </Grid>
 </UserControl>

@@ -1,50 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Globalization;
 using FamilyMartUI.Common;
+
 
 namespace FamilyMartUI.UC
 {
-    /// <summary>
-    /// Interaction logic for UCChart.xaml
-    /// </summary>
-    public partial class UCChart : UserControl
-    {
-        public UCChart()
-        {
-            InitializeComponent();
-        }
-    }
-
     public class MyCanvas : Canvas
     {
-        private const double lineWidth = 2;
+        private const double lineWidth = 1.5;
         private const double arrowWidth = 3;
         private const double flagHeight = 10;
         private const double flagOffset = 2;
 
-        private double radius = 3;
+        private const double radius = 2;
+        private const string fontFace = "Segoe UI";
 
         int[] xPoints = { 1, 2, 3, 4, 5, 6, 7 };
         int[] yPoints = { 10, 20, 30, 40, 50, 60, 70 };
-        private string[] titles = { "进", "销", "废" };
-        private double[][] dataArray = new double[][]{ new double[] { 15, 23, 56, 34, 20, 44, 2 }, 
+        double[][] dataArray = new double[][]{ new double[] { 15, 23, 56, 34, 20, 44, 2 }, 
                                           new double[]{ 3, 60, 29, 23, 56, 34, 23 },
                                           new double[]{ 63, 12, 69, 3, 32, 45, 33 }};
-        DateTime[] xPointsDates = { };
-        private string fontFace = "Segoe UI";
-
+        DateTime[] xPointsDates = { DateTime.Now, DateTime.Now.AddDays(1),
+                                      DateTime.Now.AddDays(2), DateTime.Now.AddDays(3),
+                                      DateTime.Now.AddDays(4), DateTime.Now.AddDays(5),
+                                      DateTime.Now.AddDays(6) };
+        string[] titles = { "进", "销", "废" };
         Pen[] linePens = { new Pen(Brushes.Green, lineWidth), new Pen(Brushes.Blue, lineWidth), new Pen(Brushes.Red, lineWidth), };
 
         public void SetXYAxisAndData(DateTime[] xDates, int[] yPoints, double[][] data)
@@ -54,6 +38,12 @@ namespace FamilyMartUI.UC
             this.yPoints = yPoints;
             this.dataArray = data;
             this.InvalidateVisual();
+        }
+
+        public void SetTitleAndBrushes(string[] items, Brush[] brushes)
+        {
+            titles = items;
+            linePens = brushes.Select(item => new Pen(item, lineWidth)).ToArray();
         }
 
         private FormattedText GetFormattedText(string str)
@@ -77,7 +67,8 @@ namespace FamilyMartUI.UC
                 return;
             }
 
-            Pen pen = new Pen(Brushes.Black, lineWidth);
+            Pen blackPen = new Pen(Brushes.Black, lineWidth);
+            Pen grayPen = new Pen(Brushes.LightGray, 1);
             Pen arrowPen = new Pen(Brushes.Black, arrowWidth);
 
             FormattedText xMaxFT = GetFormattedText(xPoints.Max().ToString());
@@ -92,7 +83,7 @@ namespace FamilyMartUI.UC
             double xStep = canvasWidth / xPoints.Length;
             double yStep = canvasHeight / yPoints.Length;
             int j = 1;
-            dc.DrawLine(pen, new Point(xOffset, canvasHeight), new Point(xOffset + canvasWidth, canvasHeight));
+            dc.DrawLine(blackPen, new Point(xOffset, canvasHeight), new Point(xOffset + canvasWidth, canvasHeight));
             FormattedText ftStart = GetFormattedText("0");
 
             dc.DrawText(ftStart, new Point(xOffset, canvasHeight + flagOffset));
@@ -101,39 +92,41 @@ namespace FamilyMartUI.UC
             {
                 double startX = xOffset + j * xStep;
                 DateTime itemDate = xPointsDates[i];
-                FormattedText ft = GetFormattedText(xPoints[i].ToString(), 
-                                                   (itemDate.DayOfWeek == DayOfWeek.Sunday || 
+                FormattedText ft = GetFormattedText(xPoints[i].ToString(),
+                                                   (itemDate.DayOfWeek == DayOfWeek.Sunday ||
                                                     itemDate.DayOfWeek == DayOfWeek.Saturday) ? Brushes.Red : Brushes.Black);
-                if (i == xPoints.Length - 1)
+                //if (i == xPoints.Length - 1)
+                //{
+                //    //arrow
+                //    dc.DrawLine(arrowPen, new Point(startX - flagHeight * 2, canvasHeight - flagHeight),
+                //                new Point(startX, canvasHeight));
+                //    dc.DrawText(ft, new Point(startX - ft.Width, canvasHeight + flagOffset));
+                //}
+                //else
                 {
-                    //arrow
-                    dc.DrawLine(arrowPen, new Point(startX - flagHeight * 2, canvasHeight - flagHeight),
-                                new Point(startX, canvasHeight));
-                    dc.DrawText(ft, new Point(startX - ft.Width, canvasHeight + flagOffset));
-                }
-                else
-                {
-                    dc.DrawLine(pen, new Point(startX, canvasHeight), new Point(startX, canvasHeight - flagHeight));
+                    dc.DrawLine(blackPen, new Point(startX, canvasHeight), new Point(startX, canvasHeight - flagHeight));
                     dc.DrawText(ft, new Point(startX - ft.Width / 2, canvasHeight + flagOffset));
                 }
             }
 
-            dc.DrawLine(pen, new Point(xOffset, canvasHeight), new Point(xOffset, flagHeight));
+            dc.DrawLine(blackPen, new Point(xOffset, canvasHeight), new Point(xOffset, flagHeight));
             j = 1;
+
+            ;
             //Y-order flag
             for (int i = 0; i < yPoints.Length; i++, j++)
             {
                 double startY = j * yStep - flagHeight;
                 FormattedText ft = GetFormattedText(yPoints[i].ToString());
-                if (i == yPoints.Length - 1)
+                //if (i == yPoints.Length - 1)
+                //{
+                //    dc.DrawLine(arrowPen, new Point(xOffset + flagHeight, flagHeight * 3),
+                //                new Point(xOffset, flagHeight));
+                //    dc.DrawText(ft, new Point(yMaxFT.Width / 2, canvasHeight - startY - ft.Height / 2));
+                //}
+                //else
                 {
-                    dc.DrawLine(arrowPen, new Point(xOffset + flagHeight, flagHeight * 3),
-                                new Point(xOffset, flagHeight));
-                    dc.DrawText(ft, new Point(yMaxFT.Width / 2, canvasHeight - startY - ft.Height /2));
-                }
-                else
-                {
-                    dc.DrawLine(pen, new Point(xOffset, canvasHeight - startY), new Point(xOffset + flagHeight, canvasHeight - startY));
+                    dc.DrawLine(grayPen, new Point(xOffset, canvasHeight - startY), new Point(canvasWidth + xOffset, canvasHeight - startY));
                     dc.DrawText(ft, new Point(yMaxFT.Width / 2, canvasHeight - startY - ft.Height / 2));
                 }
 
@@ -160,15 +153,17 @@ namespace FamilyMartUI.UC
 
             double yMiddle = canvasHeight / 2;
 
+            int middleValue = (int)Math.Ceiling(titles.Length * 1.0 / 2);
             for (int i = 0; i < titles.Length; i++)
             {
                 FormattedText ft = GetFormattedText(titles[i], linePens[i].Brush);
-                if (i == 0)
-                    dc.DrawText(ft, new Point(xOffset + canvasWidth, yMiddle - 4 * flagHeight));
-                if (i == 1)
-                    dc.DrawText(ft, new Point(xOffset + canvasWidth, yMiddle));
-                if (i == 2)
-                    dc.DrawText(ft, new Point(xOffset + canvasWidth, yMiddle + 4 * flagHeight));
+                dc.DrawText(ft, new Point(xOffset + canvasWidth, yMiddle - 4 * flagHeight * middleValue--));
+                //if (i == 0)
+                //    dc.DrawText(ft, new Point(xOffset + canvasWidth, yMiddle - 4 * flagHeight));
+                //if (i == 1)
+                //    dc.DrawText(ft, new Point(xOffset + canvasWidth, yMiddle));
+                //if (i == 2)
+                //    dc.DrawText(ft, new Point(xOffset + canvasWidth, yMiddle + 4 * flagHeight));
             }
         }
 
