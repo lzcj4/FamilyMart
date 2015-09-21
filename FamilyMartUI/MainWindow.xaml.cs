@@ -68,7 +68,8 @@ namespace FamilyMartUI
             var list = this.ViewModel.DialyViewModel.Items;
             DateTime[] datetimes = list.Select(item => item.SaleDate).ToArray();
             int[] levels = new int[10];
-            double[][] datas;           
+            double[][] datas;
+            string[] emptyStrings = new string[0];
 
             switch (this.ViewModel.QueryViewModel.CurrentStatisticType)
             {
@@ -80,7 +81,7 @@ namespace FamilyMartUI
 
                     datas = new double[1][];
                     datas[0] = list.Select(item => item.Amount).ToArray();
-                    ucChart.SetTitleAndBrushes(new string[] { "日销" }, oneBrush);
+                    ucChart.SetTitleAndBrushes("日销", emptyStrings, oneBrush);
                     ucChart.SetXYAxisAndData(datetimes, levels, datas);
                     break;
                 case StatisticType.Customer:
@@ -91,7 +92,7 @@ namespace FamilyMartUI
 
                     datas = new double[1][];
                     datas[0] = list.Select(item => (double)item.Customer).ToArray();
-                    ucChart.SetTitleAndBrushes(new string[] { "来客" }, oneBrush);
+                    ucChart.SetTitleAndBrushes("来客", emptyStrings, oneBrush);
                     ucChart.SetXYAxisAndData(datetimes, levels, datas);
                     break;
                 case StatisticType.Waste:
@@ -102,7 +103,7 @@ namespace FamilyMartUI
 
                     datas = new double[1][];
                     datas[0] = list.Select(item => item.Waste).ToArray();
-                    ucChart.SetTitleAndBrushes(new string[] { "损耗" }, oneBrush);
+                    ucChart.SetTitleAndBrushes("损耗", emptyStrings, oneBrush);
                     ucChart.SetXYAxisAndData(datetimes, levels, datas);
                     break;
                 case StatisticType.WorkHours:
@@ -113,7 +114,7 @@ namespace FamilyMartUI
 
                     datas = new double[1][];
                     datas[0] = list.Select(item => item.ParttimeEmployee + item.Employee).ToArray();
-                    ucChart.SetTitleAndBrushes(new string[] { "工时" }, oneBrush);
+                    ucChart.SetTitleAndBrushes("工时", emptyStrings, oneBrush);
                     ucChart.SetXYAxisAndData(datetimes, levels, datas);
                     break;
                 case StatisticType.Electric:
@@ -124,7 +125,7 @@ namespace FamilyMartUI
 
                     datas = new double[1][];
                     datas[0] = list.Select(item => item.ElectrictCharge).ToArray();
-                    ucChart.SetTitleAndBrushes(new string[] { "电表" }, oneBrush);
+                    ucChart.SetTitleAndBrushes("电表", emptyStrings, oneBrush);
                     ucChart.SetXYAxisAndData(datetimes, levels, datas);
                     break;
                 case StatisticType.BoxLaunch:
@@ -162,7 +163,7 @@ namespace FamilyMartUI
             datas[0] = subList.Select(item => item.FirstIn).ToArray();
             datas[1] = subList.Select(item => item.FirstSale).ToArray();
             datas[2] = subList.Select(item => item.FirstWaste).ToArray();
-            ucChart.SetTitleAndBrushes(threeTitles, threeBrushes);
+            ucChart.SetTitleAndBrushes(typeName, threeTitles, threeBrushes);
             ucChart.SetXYAxisAndData(datetimes, levels, datas);
         }
 

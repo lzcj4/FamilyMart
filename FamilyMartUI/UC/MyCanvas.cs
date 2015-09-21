@@ -28,7 +28,8 @@ namespace FamilyMartUI.UC
                                       DateTime.Now.AddDays(2), DateTime.Now.AddDays(3),
                                       DateTime.Now.AddDays(4), DateTime.Now.AddDays(5),
                                       DateTime.Now.AddDays(6) };
-        string[] titles = { "进", "销", "废" };
+        string title = string.Empty;
+        string[] categories = { "进", "销", "废" };
         Pen[] linePens = { new Pen(Brushes.Green, lineWidth), new Pen(Brushes.Blue, lineWidth), new Pen(Brushes.Red, lineWidth), };
 
         public void SetXYAxisAndData(DateTime[] xDates, int[] yPoints, double[][] data)
@@ -37,15 +38,18 @@ namespace FamilyMartUI.UC
             this.xPoints = xDates.Select(item => item.Day).ToArray();
             this.yPoints = yPoints;
             this.dataArray = data;
+
             this.xChartPadding = 20;
             this.yChartPadding = 20;
+
             this.InvalidateVisual();
         }
 
-        public void SetTitleAndBrushes(string[] items, Brush[] brushes)
+        public void SetTitleAndBrushes(string title, string[] categories, Brush[] brushes)
         {
-            titles = items;
-            linePens = brushes.Select(item => new Pen(item, lineWidth)).ToArray();
+            this.title = title;
+            this.categories = categories;
+            this.linePens = brushes.Select(item => new Pen(item, lineWidth)).ToArray();
         }
 
         private FormattedText GetFormattedText(string str)
@@ -64,9 +68,10 @@ namespace FamilyMartUI.UC
         {
             base.OnRender(dc);
             if (xPoints.IsNullOrEmpty() || yPoints.IsNullOrEmpty() ||
-                dataArray.IsNullOrEmpty() || xPointsDates.IsNullOrEmpty())
+                dataArray.IsNullOrEmpty() || xPointsDates.IsNullOrEmpty() ||
+                linePens.IsNullOrEmpty())
             {
-                return;
+                throw new InvalidOperationException();
             }
 
             Pen blackPen = new Pen(Brushes.Black, lineWidth);
@@ -74,7 +79,6 @@ namespace FamilyMartUI.UC
 
             FormattedText xMaxFT = GetFormattedText(xPoints.Max().ToString());
             FormattedText yMaxFT = GetFormattedText(yPoints.Max().ToString());
-            FormattedText tMaxFT = GetFormattedText(titles.Max().ToString());
 
             xChartPadding = yMaxFT.Width > xChartPadding ? yMaxFT.Width + offset : xChartPadding;
             yChartPadding = xMaxFT.Height > yChartPadding ? xMaxFT.Height : yChartPadding;
@@ -135,13 +139,21 @@ namespace FamilyMartUI.UC
                 }
             }
 
-            double yMiddle = this.ActualHeight / 2;
-
-            int middleValue = (int)Math.Ceiling(titles.Length * 1.0 / 2);
-            for (int i = 0; i < titles.Length; i++)
+            if (!title.IsNullOrEmpty() && !linePens.IsNullOrEmpty())
             {
-                FormattedText ft = GetFormattedText(titles[i], linePens[i].Brush);
-                dc.DrawText(ft, new Point(xChartPadding + canvasWidth + offset, yMiddle - 2 * yChartPadding * (--middleValue)));
+                FormattedText ft = GetFormattedText(title, linePens[0].Brush);
+                dc.DrawText(ft, new Point(this.ActualWidth / 2, 0));
+            }
+
+            if (!categories.IsNullOrEmpty() && !linePens.IsNullOrEmpty())
+            {
+                double yMiddle = this.ActualHeight / 2;
+                int middleValue = (int)Math.Ceiling(categories.Length * 1.0 / 2);
+                for (int i = 0; i < categories.Length; i++)
+                {
+                    FormattedText ft = GetFormattedText(categories[i], linePens[i].Brush);
+                    dc.DrawText(ft, new Point(xChartPadding + canvasWidth + offset, yMiddle - 2 * yChartPadding * (--middleValue)));
+                }
             }
         }
 
