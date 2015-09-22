@@ -4,6 +4,10 @@ using System.Windows.Data;
 using DAL.Common;
 using DAL.Model;
 using FamilyMartUI.Common;
+using System.Text;
+using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace FamilyMartUI.ViewModel
 {
@@ -31,28 +35,12 @@ namespace FamilyMartUI.ViewModel
 
         #endregion
 
-        public MainViewModel()
-        {
-        }
-
         public void LoadAsync(Action callback)
         {
             Action action = () =>
             {
                 var list = FMDBHelper.Instance.GetDialyReport();
-                this.RunOnUIThreadAsync(() =>
-                {
-                    this.DialyViewModel.Items.Clear();
-                    foreach (var item in list)
-                    {
-                        this.DialyViewModel.Items.Add(item);
-                    }
-                    this.DialyViewModel.ContentView.MoveCurrentToFirst();
-                    if (callback != null)
-                    {
-                        callback();
-                    }
-                });
+                Add(list, callback);
             };
 
             action.BeginInvoke((ar) => { action.EndInvoke(ar); }, this);
@@ -63,21 +51,70 @@ namespace FamilyMartUI.ViewModel
             Action action = () =>
             {
                 var list = FMDBHelper.Instance.GetDialyReport(startDate, endDate);
-                this.RunOnUIThreadAsync(() =>
-                {
-                    this.DialyViewModel.Items.Clear();
-                    foreach (var item in list)
-                    {
-                        this.DialyViewModel.Items.Add(item);
-                    }
-                    if (callback != null)
-                    {
-                        callback();
-                    }
-                });
+                Add(list, callback);
             };
 
             action.BeginInvoke((ar) => { action.EndInvoke(ar); }, this);
+        }
+
+        private void Add(IEnumerable<DialyReport> list, Action callback)
+        {
+            this.RunOnUIThreadAsync(() =>
+                          {
+                              this.DialyViewModel.Items.Clear();
+                              foreach (var item in list)
+                              {
+                                  this.DialyViewModel.Items.Add(item);
+                              }
+                              UpdateStatisticSummary();
+                              if (callback != null)
+                              {
+                                  callback();
+                              }
+                          });
+        }
+
+
+        void UpdateStatisticSummary()
+        {
+            StringBuilder sb = new StringBuilder();
+            var list = this.DialyViewModel.Items;
+            if (list.IsNullOrEmpty())
+            {
+                this.DialyViewModel.SummaryText = sb.ToString();
+                return;
+            }
+
+            var workDayList = list.Where(item => !item.IsWeekend);
+            var weekendList = list.Where(item => item.IsWeekend);
+            int paddingLen = 50;
+            char paddingChar = ' ';
+
+            string amount = string.Format("总日销:{0},工作日销:{1},周末日销:{2};",
+                                    list.Sum(item => item.Amount), workDayList.Sum(item => item.Amount),
+                                    weekendList.Sum(item => item.Amount)).PadRight(paddingLen, paddingChar);
+            sb.Append(amount);
+
+            string waste = string.Format("\t总损耗:{0},工作日损耗:{1},周末损耗:{2};",
+                                      list.Sum(item => item.Waste), workDayList.Sum(item => item.Waste),
+                                      weekendList.Sum(item => item.Waste));
+            sb.AppendLine(waste);
+
+            string parttime = string.Format("总兼职:{0},工作日兼职:{1},周末兼职:{2};",
+                                            list.Sum(item => item.ParttimeEmployee), workDayList.Sum(item => item.ParttimeEmployee),
+                                            weekendList.Sum(item => item.ParttimeEmployee)).PadRight(paddingLen, paddingChar);
+            sb.Append(parttime);
+
+            string employee = string.Format("\t总正职:{0},工作日正职:{1},周末正职:{2};",
+                                          list.Sum(item => item.Employee), workDayList.Sum(item => item.Employee),
+                                          weekendList.Sum(item => item.Employee));
+            sb.AppendLine(employee);
+
+            string electric = string.Format("总电表:{0},工作日电表:{1},周末电表:{2};",
+                                    list.Sum(item => item.ElectrictCharge), workDayList.Sum(item => item.ElectrictCharge),
+                                    weekendList.Sum(item => item.ElectrictCharge)).PadRight(paddingLen, paddingChar);
+            sb.Append(electric);
+            this.DialyViewModel.SummaryText = sb.ToString();
         }
 
         public void LoadDetail(DialyReport report)

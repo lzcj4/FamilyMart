@@ -8,6 +8,7 @@ using System;
 using System.Windows.Media;
 using FamilyMartUI.Properties;
 using System.Text;
+using FamilyMartUI.Common;
 
 namespace FamilyMartUI
 {
@@ -142,7 +143,6 @@ namespace FamilyMartUI
                 default:
                     break;
             }
-            UpdateStatisticSummary();
         }
 
         void SetThreeLineByType(DateTime[] datetimes, int step, string typeName)
@@ -160,35 +160,6 @@ namespace FamilyMartUI
             datas[1] = subList.Select(item => item.FirstSale).ToArray();
             datas[2] = subList.Select(item => item.FirstWaste).ToArray();
             ucChart.SetData(datetimes, levels, datas, typeName, threeTitles, threeBrushes);
-        }
-
-        void UpdateStatisticSummary()
-        {
-            StringBuilder sb = new StringBuilder();
-            var list = this.ViewModel.DialyViewModel.Items;
-            var workDayList = list.Where(item => !item.IsWeekend);
-            var weekendList = list.Where(item => item.IsWeekend);
-
-            string amount = string.Format("总日销:{0},工作日销:{1},周末日销:{2};",
-                list.Sum(item => item.Amount), workDayList.Sum(item => item.Amount), weekendList.Sum(item => item.Amount));
-            sb.Append(amount);
-
-            string waste = string.Format("\t总损耗:{0},工作日损耗:{1},周末损耗:{2};",
-              list.Sum(item => item.Waste), workDayList.Sum(item => item.Waste), weekendList.Sum(item => item.Waste));
-            sb.Append(waste);
-
-            string parttime = string.Format("\t总兼职:{0},工作日兼职:{1},周末兼职:{2};",
-                        list.Sum(item => item.ParttimeEmployee), workDayList.Sum(item => item.ParttimeEmployee), weekendList.Sum(item => item.ParttimeEmployee));
-            sb.Append(parttime);
-
-            string employee = string.Format("\t总正职:{0},工作日正职:{1},周末正职:{2};",
-                      list.Sum(item => item.Employee), workDayList.Sum(item => item.Employee), weekendList.Sum(item => item.Employee));
-            sb.Append(employee);
-
-            string electric = string.Format("\t总电表:{0},工作日电表:{1},周末电表:{2};",
-                    list.Sum(item => item.ElectrictCharge), workDayList.Sum(item => item.ElectrictCharge), weekendList.Sum(item => item.ElectrictCharge));
-            sb.Append(electric);
-            this.ViewModel.DialyViewModel.SummaryText = sb.ToString();
         }
     }
 }
