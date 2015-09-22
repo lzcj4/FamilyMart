@@ -123,6 +123,11 @@ namespace DAL
             return dialyRep;
         }
 
+        public static string GetLatestError()
+        {
+            return sbInfo.ToString();
+        }
+
         private static DateTime GetDate(string str)
         {
             string[] parts = str.Split(new string[] { "年", "月", "日" }, StringSplitOptions.RemoveEmptyEntries);
@@ -241,6 +246,7 @@ namespace DAL
 
             if (strValue.IsNullOrEmpty())
             {
+                sbInfo.AppendLine(string.Format("解释前缀无效:{0}", prefix));
                 throw new ArgumentNullException(string.Format("当前:{0} 解析失败", str));
             }
 
@@ -270,7 +276,13 @@ namespace DAL
             int matchTimes = matchValues.Count;
             if (matchTimes == 0)
             {
+                sbInfo.AppendLine(string.Format("当前:{0} 解析失败", str));
                 throw new ArgumentNullException(string.Format("当前:{0} 解析失败", str));
+            }
+
+            if (matchTimes !=2)
+            {
+                sbInfo.AppendLine(string.Format("当前:{0} 解析可能有问题", str));
             }
 
             GoodsRecord result = new GoodsRecord();

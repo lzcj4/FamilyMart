@@ -6,6 +6,7 @@ using DAL;
 using DAL.Model;
 using FamilyMartUI.Common;
 using Microsoft.Win32;
+using System.Text;
 
 namespace FamilyMartUI.UC
 {
@@ -20,7 +21,7 @@ namespace FamilyMartUI.UC
         }
 
         public event EventHandler OnChanged;
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ButtonText_Click(object sender, RoutedEventArgs e)
         {
             string s = txtReport.Text.Trim();
             if (s.IsNullOrEmpty())
@@ -39,7 +40,7 @@ namespace FamilyMartUI.UC
             }
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void ButtonFile_Click(object sender, RoutedEventArgs e)
         {
             FMDBHelper dbHelper = FMDBHelper.Instance;
             OpenFileDialog openDlg = new OpenFileDialog();
@@ -51,6 +52,7 @@ namespace FamilyMartUI.UC
             Action action = new Action(() =>
             {
                 //Directory.GetFiles(@"E:\FM Record", "*");
+                StringBuilder sb = new StringBuilder();
                 foreach (string item in filePaths)
                 {
                     using (FileStream fs = new FileStream(item, FileMode.Open))
@@ -64,12 +66,22 @@ namespace FamilyMartUI.UC
                                 dbHelper.InsertDialyReport(v);
                                 isExisted = true;
                             }
+
+                            string error = DialyReportParser.GetLatestError();
+                            if (!error.IsNullOrEmpty())
+                            {
+                                sb.AppendLine(error);
+                            }
                         }
                     }
                 }
 
                 this.Dispatcher.BeginInvoke((Delegate)new Action(() =>
                 {
+                    if (sb.Length > 0)
+                    {
+                        txtReport.Text = sb.ToString();
+                    }
                     if (isExisted && OnChanged != null)
                     {
                         OnChanged(this, new EventArgs());
