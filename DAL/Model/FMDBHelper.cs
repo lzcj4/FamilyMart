@@ -99,9 +99,16 @@ namespace DAL.Model
             }
         }
 
+        /// <summary>
+        /// Only get the recent 31 days data
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<DialyReport> GetDialyReport()
         {
-            return GetDialyReport(sqlSelectDialyReport + "  order by SaleDate asc");
+            string sql = string.Format("{0} ({1} {2} ) {3}", sqlSelect, sqlSelectDialyReport,
+                                        " order by SaleDate desc   limit 0,31",
+                                        " order by SaleDate asc");
+            return GetDialyReport(sql);
         }
 
         public IEnumerable<DialyReport> GetDialyReport(string startDate, string endDate)

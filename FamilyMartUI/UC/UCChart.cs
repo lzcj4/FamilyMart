@@ -11,7 +11,7 @@ namespace FamilyMartUI.UC
     public class UCChart : Canvas
     {
         private const double lineWidth = 1.5;
-        private const double pointRadius = 2;
+        private const double pointRadius = 3;
         private const double flagHeight = 10;
         private const double offset = 5;
         private const string fontFace = "Segoe UI";
