@@ -66,6 +66,7 @@ namespace FamilyMartUI.ViewModel
                               {
                                   this.DialyViewModel.Items.Add(item);
                               }
+                              this.DialyViewModel.ContentView.MoveCurrentToFirst();
                               UpdateStatisticSummary();
                               if (callback != null)
                               {
@@ -90,27 +91,27 @@ namespace FamilyMartUI.ViewModel
             int paddingLen = 50;
             char paddingChar = ' ';
 
-            string amount = string.Format("总日销:{0},工作日销:{1},周末日销:{2};",
+            string amount = string.Format("总日销:{0:n},工作日销:{1:n},周末日销:{2:n};",
                                     list.Sum(item => item.Amount), workDayList.Sum(item => item.Amount),
                                     weekendList.Sum(item => item.Amount)).PadRight(paddingLen, paddingChar);
             sb.Append(amount);
 
-            string waste = string.Format("\t总损耗:{0},工作日损耗:{1},周末损耗:{2};",
+            string waste = string.Format("\t总损耗:{0:n},工作日损耗:{1:n},周末损耗:{2:n};",
                                       list.Sum(item => item.Waste), workDayList.Sum(item => item.Waste),
                                       weekendList.Sum(item => item.Waste));
             sb.AppendLine(waste);
 
-            string parttime = string.Format("总兼职:{0},工作日兼职:{1},周末兼职:{2};",
+            string parttime = string.Format("总兼职:{0:n},工作日兼职:{1:n},周末兼职:{2:n};",
                                             list.Sum(item => item.ParttimeEmployee), workDayList.Sum(item => item.ParttimeEmployee),
                                             weekendList.Sum(item => item.ParttimeEmployee)).PadRight(paddingLen, paddingChar);
             sb.Append(parttime);
 
-            string employee = string.Format("\t总正职:{0},工作日正职:{1},周末正职:{2};",
+            string employee = string.Format("\t总正职:{0:n},工作日正职:{1:n},周末正职:{2:n};",
                                           list.Sum(item => item.Employee), workDayList.Sum(item => item.Employee),
                                           weekendList.Sum(item => item.Employee));
             sb.AppendLine(employee);
 
-            string electric = string.Format("总电表:{0},工作日电表:{1},周末电表:{2};",
+            string electric = string.Format("总电表:{0:n},工作日电表:{1:n},周末电表:{2:n};",
                                     list.Sum(item => item.ElectrictCharge), workDayList.Sum(item => item.ElectrictCharge),
                                     weekendList.Sum(item => item.ElectrictCharge)).PadRight(paddingLen, paddingChar);
             sb.Append(electric);
