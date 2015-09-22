@@ -133,6 +133,7 @@ namespace DAL
             string[] parts = str.Split(new string[] { "年", "月", "日" }, StringSplitOptions.RemoveEmptyEntries);
             if (parts.IsNullOrEmpty() || !(parts.Length == 2 || parts.Length == 3))
             {
+                sbInfo.AppendLine(string.Format("无效日期:{0}", str));
                 throw new InvalidOperationException("无效日期");
             }
 
@@ -149,6 +150,7 @@ namespace DAL
             DateTime result = DateTime.Now;
             if (!DateTime.TryParse(dateStr, out result))
             {
+                sbInfo.AppendLine(string.Format("无效日期:{0}", dateStr));
                 throw new InvalidCastException("非有效数值");
             }
             return result;
@@ -187,6 +189,7 @@ namespace DAL
         {
             if (str.IsNullOrEmpty())
             {
+                sbInfo.AppendLine(string.Format("待解析数据为空:{0}", prefix));
                 throw new ArgumentNullException("待解析数据为空");
             }
 
@@ -206,6 +209,7 @@ namespace DAL
             double result = 0;
             if (!Double.TryParse(amount, out result))
             {
+                sbInfo.AppendLine(string.Format("非有效数值:{0}", str));
                 throw new InvalidCastException(string.Format("非有效数值:{0}", str));
             }
             return result;
@@ -215,6 +219,7 @@ namespace DAL
         {
             if (str.IsNullOrEmpty())
             {
+                sbInfo.AppendLine(string.Format("待解析数据为空:{0}", prefix));
                 throw new ArgumentNullException("待解析数据为空");
             }
             string result = Replace(str, prefix).Replace(':', ' ').Replace(',', ' ')
@@ -233,6 +238,7 @@ namespace DAL
         {
             if (str.IsNullOrEmpty())
             {
+                sbInfo.AppendLine(string.Format("待解析数据为空:{0}", prefix));
                 throw new InvalidCastException(string.Format("待解析数据为空:{0}", prefix));
             }
 
@@ -262,6 +268,7 @@ namespace DAL
         {
             if (str.IsNullOrEmpty())
             {
+                sbInfo.AppendLine(string.Format("待解析数据为空:{0}", prefix));
                 throw new InvalidCastException(string.Format("待解析数据为空:{0}", prefix));
             }
 
@@ -307,6 +314,7 @@ namespace DAL
         {
             if (str.IsNullOrEmpty())
             {
+                sbInfo.AppendLine(string.Format("待解析数据为空:{0}", prefix));
                 throw new InvalidCastException(string.Format("待解析数据为空:{0}", prefix));
             }
 
@@ -320,6 +328,7 @@ namespace DAL
             MatchCollection matchValues = GetMatches(strValue);
             if (matchValues.Count != 1)
             {
+                sbInfo.AppendLine(string.Format("当前:{0} 解析失败", str));
                 throw new ArgumentNullException(string.Format("当前:{0} 解析失败", str));
             }
 
@@ -343,6 +352,7 @@ namespace DAL
             string[] parts = str.Split(new char[] { '/' });
             if (parts.IsNullOrEmpty() || parts.Length != 3)
             {
+                sbInfo.AppendLine(string.Format("当前:{0} 解析失败", str));
                 throw new ArgumentNullException(string.Format("当前:{0} 解析失败", str));
             }
 

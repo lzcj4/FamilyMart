@@ -60,12 +60,18 @@ namespace FamilyMartUI.UC
                         using (StreamReader sr = new StreamReader(fs))
                         {
                             string s = sr.ReadToEnd();
-                            var v = DialyReportParser.Parse(s);
-                            if (v != null)
+                            try
                             {
-                                dbHelper.InsertDialyReport(v);
-                                isExisted = true;
+                                var v = DialyReportParser.Parse(s);
+                                if (v != null)
+                                {
+                                    dbHelper.InsertDialyReport(v);
+                                    isExisted = true;
+                                }
                             }
+                            catch (System.Exception ex)
+                            {                            	    
+                            }                        
 
                             string error = DialyReportParser.GetLatestError();
                             if (!error.IsNullOrEmpty())
