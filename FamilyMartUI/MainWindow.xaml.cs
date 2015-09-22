@@ -9,6 +9,7 @@ using System.Windows.Media;
 using FamilyMartUI.Properties;
 using System.Text;
 using FamilyMartUI.Common;
+using System.ComponentModel;
 
 namespace FamilyMartUI
 {
@@ -29,6 +30,7 @@ namespace FamilyMartUI
             this.DataContext = new MainViewModel();
 
             this.Loaded += MainWindow_Loaded;
+            this.Closing += MainWindow_Closing;
             this.ucDialyReport.OnSelectionChanged += ucDialyReport_OnSelectionChanged;
             this.ucParser.OnChanged += ucParser_OnChanged;
             this.ViewModel.SearchViewModel.OnSearch += SearchViewModel_OnSearch;
@@ -37,6 +39,11 @@ namespace FamilyMartUI
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             this.ViewModel.LoadAsync(UpadteStatisticChart);
+        }
+
+        void MainWindow_Closing(object sender, CancelEventArgs e)
+        {
+            FMDBHelper.Instance.Dispose();
         }
 
         void ucDialyReport_OnSelectionChanged(object sender, UC.EventArgs<DialyReport> e)
