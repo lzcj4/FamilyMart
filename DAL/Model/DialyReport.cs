@@ -15,6 +15,14 @@ namespace DAL.Model
         public int Id { get; set; }
         public DateTime SaleDate { get; set; }
 
+        public bool IsWeekend
+        {
+            get
+            {
+                return this.SaleDate.DayOfWeek == DayOfWeek.Saturday || this.SaleDate.DayOfWeek == DayOfWeek.Sunday;
+            }
+        }
+
         public string SaleDateStr
         {
             get { return string.Format("{0} {1}", SaleDate.ToString("yyyy-MM-dd"), GetDayOfWeek(this.SaleDate)); }

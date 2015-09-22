@@ -62,9 +62,9 @@
     <Compile Include="Common\GridColumnWidthConverter.cs" />
     <Compile Include="Common\OverRangeWarnConverter.cs" />
     <Compile Include="Common\ReverseVisibilityConverter.cs" />
-    <Compile Include="UC\MyCanvas.cs" />
-    <Compile Include="UC\UCQuery.xaml.cs">
-      <DependentUpon>UCQuery.xaml</DependentUpon>
+    <Compile Include="UC\UCChart.cs" />
+    <Compile Include="UC\UCSearch.xaml.cs">
+      <DependentUpon>UCSearch.xaml</DependentUpon>
     </Compile>
     <Compile Include="UC\UCReport.xaml.cs">
       <DependentUpon>UCReport.xaml</DependentUpon>
@@ -75,7 +75,7 @@
     <Compile Include="UC\UCReportParser.xaml.cs">
       <DependentUpon>UCReportParser.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\QueryViewModel.cs" />
+    <Compile Include="ViewModel\SearchViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ISortOrder.cs" />
     <Compile Include="ViewModel\SortOrderViewModel.cs" />
@@ -104,7 +104,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UC\UCQuery.xaml">
+    <Page Include="UC\UCSearch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

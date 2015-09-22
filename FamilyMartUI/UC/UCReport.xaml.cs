@@ -35,97 +35,24 @@ namespace FamilyMartUI.UC
             if (element == null) return null;
             return (ICollectionView)element.GetValue(ContentViewProperty);
         }
-
+        
         /// <summary>
-        ///Is Loading
+        ///SummaryText
         /// </summary>
-        public static readonly DependencyProperty IsLoadingProperty =
-            DependencyProperty.Register("IsLoading", typeof(bool), typeof(UCReport));
+        public static readonly DependencyProperty SummaryTextProperty =
+            DependencyProperty.Register("SummaryText", typeof(string), typeof(UCReport));
 
-        public static void SetIsLoading(DependencyObject element, bool value)
+        public static void SetSummaryText(DependencyObject element, string value)
         {
             if (element == null) return;
-            element.SetValue(IsLoadingProperty, value);
+            element.SetValue(SummaryTextProperty, value);
         }
 
-        public static bool GetIsLoading(DependencyObject element)
-        {
-            if (element == null) return false;
-            return (bool)element.GetValue(IsLoadingProperty);
-        }
-
-        /// <summary>
-        ///Is content empty
-        /// </summary>
-        public static readonly DependencyProperty IsEmptyProperty =
-            DependencyProperty.Register("IsEmpty", typeof(bool), typeof(UCReport));
-
-        public static void SetIsEmpty(DependencyObject element, bool value)
-        {
-            if (element == null) return;
-            element.SetValue(IsEmptyProperty, value);
-        }
-
-        public static bool GetIsEmpty(DependencyObject element)
-        {
-            if (element == null) return false;
-            return (bool)element.GetValue(IsEmptyProperty);
-        }
-
-        /// <summary>
-        ///Is Error
-        /// </summary>
-        public static readonly DependencyProperty IsErrorProperty =
-            DependencyProperty.Register("IsError", typeof(bool), typeof(UCReport));
-
-        public static void SetIsError(DependencyObject element, bool value)
-        {
-            if (element == null) return;
-            element.SetValue(IsErrorProperty, value);
-        }
-
-        public static bool GetIsError(DependencyObject element)
-        {
-            if (element == null) return false;
-            return (bool)element.GetValue(IsErrorProperty);
-        }
-
-        /// <summary>
-        ///Empty hint
-        /// </summary>
-        public static readonly DependencyProperty EmptyHintProperty =
-            DependencyProperty.Register("EmptyHint", typeof(string), typeof(UCReport));
-
-        public static void SetEmptyHint(DependencyObject element, string value)
-        {
-            if (element == null) return;
-            element.SetValue(EmptyHintProperty, value);
-        }
-
-        public static string GetEmptyHint(DependencyObject element)
+        public static string GetSummaryText(DependencyObject element)
         {
             if (element == null) return string.Empty;
-            return (string)element.GetValue(EmptyHintProperty);
+            return (string)element.GetValue(SummaryTextProperty);
         }
-
-        /// <summary>
-        ///Error hint
-        /// </summary>
-        public static readonly DependencyProperty ErrorHintProperty =
-            DependencyProperty.Register("ErrorHint", typeof(string), typeof(UCReport));
-
-        public static void SetErrorHint(DependencyObject element, string value)
-        {
-            if (element == null) return;
-            element.SetValue(ErrorHintProperty, value);
-        }
-
-        public static string GetErrorHint(DependencyObject element)
-        {
-            if (element == null) return string.Empty;
-            return (string)element.GetValue(ErrorHintProperty);
-        }
-
 
         #endregion
 

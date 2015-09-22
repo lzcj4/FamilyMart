@@ -23,8 +23,8 @@ namespace FamilyMartUI.ViewModel
             get { return detailViewModel; }
         }
 
-        QueryViewModel queryViewModel = new QueryViewModel();
-        public QueryViewModel QueryViewModel
+        SearchViewModel queryViewModel = new SearchViewModel();
+        public SearchViewModel SearchViewModel
         {
             get { return queryViewModel; }
         }

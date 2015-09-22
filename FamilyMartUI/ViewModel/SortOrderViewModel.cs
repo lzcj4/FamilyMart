@@ -26,10 +26,21 @@ namespace FamilyMartUI.ViewModel
             }
         }
 
+        string summaryText;
+        public string SummaryText
+        {
+            get { return summaryText; }
+            set
+            {
+                SetProperty(ref summaryText, value, "SummaryText");
+            }
+        }
+
         public SortOrderViewModel()
         {
             ContentView = CollectionViewSource.GetDefaultView(this.Items);
         }
+
 
         #region Sort order
 

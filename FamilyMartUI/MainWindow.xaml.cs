@@ -7,6 +7,7 @@ using System.Linq;
 using System;
 using System.Windows.Media;
 using FamilyMartUI.Properties;
+using System.Text;
 
 namespace FamilyMartUI
 {
@@ -29,7 +30,7 @@ namespace FamilyMartUI
             this.Loaded += MainWindow_Loaded;
             this.ucDialyReport.OnSelectionChanged += ucDialyReport_OnSelectionChanged;
             this.ucParser.OnChanged += ucParser_OnChanged;
-            this.ViewModel.QueryViewModel.OnQuery += QueryViewModel_OnQuery;
+            this.ViewModel.SearchViewModel.OnSearch += SearchViewModel_OnSearch;
         }
 
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -47,7 +48,7 @@ namespace FamilyMartUI
             this.ViewModel.LoadAsync(UpadteStatisticChart);
         }
 
-        void QueryViewModel_OnQuery(object sender, UC.EventArgs<QueryViewModel, bool> e)
+        void SearchViewModel_OnSearch(object sender, UC.EventArgs<SearchViewModel, bool> e)
         {
             if (e.Item2)
             {
@@ -71,7 +72,7 @@ namespace FamilyMartUI
             double[][] datas;
             string[] emptyStrings = new string[0];
 
-            switch (this.ViewModel.QueryViewModel.CurrentStatisticType)
+            switch (this.ViewModel.SearchViewModel.CurrentStatisticType)
             {
                 case StatisticType.Amount:
                     for (int i = 0; i < 10; i++)
@@ -81,8 +82,7 @@ namespace FamilyMartUI
 
                     datas = new double[1][];
                     datas[0] = list.Select(item => item.Amount).ToArray();
-                    ucChart.SetTitleAndBrushes("日销", emptyStrings, oneBrush);
-                    ucChart.SetXYAxisAndData(datetimes, levels, datas);
+                    ucChart.SetData(datetimes, levels, datas, "日销", emptyStrings, oneBrush);
                     break;
                 case StatisticType.Customer:
                     for (int i = 0; i < 10; i++)
@@ -92,8 +92,7 @@ namespace FamilyMartUI
 
                     datas = new double[1][];
                     datas[0] = list.Select(item => (double)item.Customer).ToArray();
-                    ucChart.SetTitleAndBrushes("来客", emptyStrings, oneBrush);
-                    ucChart.SetXYAxisAndData(datetimes, levels, datas);
+                    ucChart.SetData(datetimes, levels, datas, "来客", emptyStrings, oneBrush);
                     break;
                 case StatisticType.Waste:
                     for (int i = 0; i < 10; i++)
@@ -103,8 +102,7 @@ namespace FamilyMartUI
 
                     datas = new double[1][];
                     datas[0] = list.Select(item => item.Waste).ToArray();
-                    ucChart.SetTitleAndBrushes("损耗", emptyStrings, oneBrush);
-                    ucChart.SetXYAxisAndData(datetimes, levels, datas);
+                    ucChart.SetData(datetimes, levels, datas, "损耗", emptyStrings, oneBrush);
                     break;
                 case StatisticType.WorkHours:
                     for (int i = 0; i < 10; i++)
@@ -114,8 +112,7 @@ namespace FamilyMartUI
 
                     datas = new double[1][];
                     datas[0] = list.Select(item => item.ParttimeEmployee + item.Employee).ToArray();
-                    ucChart.SetTitleAndBrushes("工时", emptyStrings, oneBrush);
-                    ucChart.SetXYAxisAndData(datetimes, levels, datas);
+                    ucChart.SetData(datetimes, levels, datas, "工时", emptyStrings, oneBrush);
                     break;
                 case StatisticType.Electric:
                     for (int i = 0; i < 10; i++)
@@ -125,8 +122,7 @@ namespace FamilyMartUI
 
                     datas = new double[1][];
                     datas[0] = list.Select(item => item.ElectrictCharge).ToArray();
-                    ucChart.SetTitleAndBrushes("电表", emptyStrings, oneBrush);
-                    ucChart.SetXYAxisAndData(datetimes, levels, datas);
+                    ucChart.SetData(datetimes, levels, datas, "电表", emptyStrings, oneBrush);
                     break;
                 case StatisticType.BoxLaunch:
                     SetThreeLineByType(datetimes, Settings.Default.BoxLaunch, "盒饭");
@@ -146,10 +142,10 @@ namespace FamilyMartUI
                 default:
                     break;
             }
-
+            UpdateStatisticSummary();
         }
 
-        private void SetThreeLineByType(DateTime[] datetimes, int step, string typeName)
+        void SetThreeLineByType(DateTime[] datetimes, int step, string typeName)
         {
             var list = this.ViewModel.DialyViewModel.Items;
             int[] levels = new int[10];
@@ -163,31 +159,36 @@ namespace FamilyMartUI
             datas[0] = subList.Select(item => item.FirstIn).ToArray();
             datas[1] = subList.Select(item => item.FirstSale).ToArray();
             datas[2] = subList.Select(item => item.FirstWaste).ToArray();
-            ucChart.SetTitleAndBrushes(typeName, threeTitles, threeBrushes);
-            ucChart.SetXYAxisAndData(datetimes, levels, datas);
+            ucChart.SetData(datetimes, levels, datas, typeName, threeTitles, threeBrushes);
         }
 
-        private void TestParse()
+        void UpdateStatisticSummary()
         {
-            FMDBHelper dbHelper = FMDBHelper.Instance;
-            string[] filePaths = Directory.GetFiles(@"E:\FM Record", "*");
-            foreach (string item in filePaths)
-            {
-                using (FileStream fs = new FileStream(item, FileMode.Open))
-                {
-                    using (StreamReader sr = new StreamReader(fs))
-                    {
-                        string s = sr.ReadToEnd();
-                        var v = DialyReportParser.Parse(s);
-                        if (v != null)
-                        {
-                            dbHelper.InsertDialyReport(v);
-                        }
-                    }
-                }
-            }
-            //MessageBox.Show(string.Format("成功导入:{0}个文件数据", filePaths.Length));
-            //this.ViewModel.LoadAsync();
+            StringBuilder sb = new StringBuilder();
+            var list = this.ViewModel.DialyViewModel.Items;
+            var workDayList = list.Where(item => !item.IsWeekend);
+            var weekendList = list.Where(item => item.IsWeekend);
+
+            string amount = string.Format("总日销:{0},工作日销:{1},周末日销:{2};",
+                list.Sum(item => item.Amount), workDayList.Sum(item => item.Amount), weekendList.Sum(item => item.Amount));
+            sb.Append(amount);
+
+            string waste = string.Format("\t总损耗:{0},工作日损耗:{1},周末损耗:{2};",
+              list.Sum(item => item.Waste), workDayList.Sum(item => item.Waste), weekendList.Sum(item => item.Waste));
+            sb.Append(waste);
+
+            string parttime = string.Format("\t总兼职:{0},工作日兼职:{1},周末兼职:{2};",
+                        list.Sum(item => item.ParttimeEmployee), workDayList.Sum(item => item.ParttimeEmployee), weekendList.Sum(item => item.ParttimeEmployee));
+            sb.Append(parttime);
+
+            string employee = string.Format("\t总正职:{0},工作日正职:{1},周末正职:{2};",
+                      list.Sum(item => item.Employee), workDayList.Sum(item => item.Employee), weekendList.Sum(item => item.Employee));
+            sb.Append(employee);
+
+            string electric = string.Format("\t总电表:{0},工作日电表:{1},周末电表:{2};",
+                    list.Sum(item => item.ElectrictCharge), workDayList.Sum(item => item.ElectrictCharge), weekendList.Sum(item => item.ElectrictCharge));
+            sb.Append(electric);
+            this.ViewModel.DialyViewModel.SummaryText = sb.ToString();
         }
     }
 }

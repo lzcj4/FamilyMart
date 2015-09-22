@@ -5,27 +5,34 @@
         Title="MainWindow" Height="800" Width="1400">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="0.4*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1.2*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-        <Grid Grid.Column="0" Grid.Row="0">
+        
+        <Grid  Grid.Row="0"  >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
+            
             <uc:UCReportParser Grid.Column="0" x:Name="ucParser"  />
-            <uc:UCQuery   Grid.Column="1" x:Name="ucQuery"/>
+            <uc:UCSearch   Grid.Column="1" DataContext="{Binding SearchViewModel}"/>
+            <uc:UCChart  Grid.Column="2" Margin="0,0,10,0"  x:Name="ucChart" />
         </Grid>
 
-        <uc:MyCanvas  Grid.Column="1" Margin="0,0,10,0"  x:Name="ucChart" />
-        <uc:UCReport ContentView="{Binding ContentView}" DataContext="{Binding DialyViewModel}" 
-                     Grid.Column="0" Grid.Row="1"  x:Name="ucDialyReport" Margin="5"/>
-        <uc:UCDetail ContentView="{Binding ContentView}"  DataContext="{Binding DetailViewModel}"
-                     Grid.Column="1" Grid.Row="1" Margin="5"/>
+        <Grid  Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.2*"/>
+                <ColumnDefinition Width="0.8*"/>
+            </Grid.ColumnDefinitions>
+            
+            <uc:UCReport ContentView="{Binding ContentView}" SummaryText="{Binding SummaryText}"  DataContext="{Binding DialyViewModel}" 
+                     Grid.Column="0"  x:Name="ucDialyReport" Margin="5"/>            
+            <uc:UCDetail ContentView="{Binding ContentView}"  DataContext="{Binding DetailViewModel}"
+                     Grid.Column="1"   Margin="5"/>
+        </Grid>
+
+
     </Grid>
 </Window>

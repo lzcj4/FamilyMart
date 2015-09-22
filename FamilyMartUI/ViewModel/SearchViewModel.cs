@@ -11,7 +11,7 @@ using System.Windows.Data;
 
 namespace FamilyMartUI.ViewModel
 {
-    public class QueryViewModel : ViewModelBase
+    public class SearchViewModel : ViewModelBase
     {
         const string dateFormat = "yyyy-MM-dd";
 
@@ -54,12 +54,12 @@ namespace FamilyMartUI.ViewModel
                 if (currentStatisticType != value)
                 {
                     currentStatisticType = value;
-                    RaiseOnQuery(false);
+                    RaiseOnSearch(false);
                 }
             }
         }
 
-        public ICommand QueryCommand
+        public ICommand SearchCommand
         {
             get
             {
@@ -67,23 +67,23 @@ namespace FamilyMartUI.ViewModel
                 {
                     ExecuteCallback = (obj) =>
                     {
-                        RaiseOnQuery(true);
+                        RaiseOnSearch(true);
                     },
                     CanExecuteCallback = (obj) => { return true; }
                 };
             }
         }
 
-        public event EventHandler<EventArgs<QueryViewModel, bool>> OnQuery;
-        private void RaiseOnQuery(bool isRequery)
+        public event EventHandler<EventArgs<SearchViewModel, bool>> OnSearch;
+        private void RaiseOnSearch(bool isReload)
         {
-            if (null != OnQuery)
+            if (null != OnSearch)
             {
-                OnQuery(this, new EventArgs<QueryViewModel, bool>(this, isRequery));
+                OnSearch(this, new EventArgs<SearchViewModel, bool>(this, isReload));
             }
         }
 
-        public QueryViewModel()
+        public SearchViewModel()
         {
             this.LoadGoodsTypes();
             this.GoodsTypeView = CollectionViewSource.GetDefaultView(this.goodsTypeList);

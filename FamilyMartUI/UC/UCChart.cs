@@ -6,10 +6,9 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using FamilyMartUI.Common;
 
-
 namespace FamilyMartUI.UC
 {
-    public class MyCanvas : Canvas
+    public class UCChart : Canvas
     {
         private const double lineWidth = 1.5;
         private const double pointRadius = 2;
@@ -21,7 +20,7 @@ namespace FamilyMartUI.UC
         private double xChartPadding = 20;
         int[] xPoints = { 1, 2, 3, 4, 5, 6, 7 };
         int[] yPoints = { 10, 20, 30, 40, 50, 60, 70 };
-        double[][] dataArray = new double[][]{ new double[] { 15, 23, 56, 34, 20, 44, 2 }, 
+        double[][] dataPoints = new double[][]{ new double[] { 15, 23, 56, 34, 20, 44, 2 }, 
                                           new double[]{ 3, 60, 29, 23, 56, 34, 23 },
                                           new double[]{ 63, 12, 69, 3, 32, 45, 33 }};
         DateTime[] xPointsDates = { DateTime.Now, DateTime.Now.AddDays(1),
@@ -29,27 +28,25 @@ namespace FamilyMartUI.UC
                                       DateTime.Now.AddDays(4), DateTime.Now.AddDays(5),
                                       DateTime.Now.AddDays(6) };
         string title = string.Empty;
-        string[] categories = { "进", "销", "废" };
+        string[] subTitles = { "进", "销", "废" };
         Pen[] linePens = { new Pen(Brushes.Green, lineWidth), new Pen(Brushes.Blue, lineWidth), new Pen(Brushes.Red, lineWidth), };
 
-        public void SetXYAxisAndData(DateTime[] xDates, int[] yPoints, double[][] data)
+        public void SetData(DateTime[] xDates, int[] yPoints, double[][] data,
+                                     string title, string[] subTitles, Brush[] brushes)
         {
             this.xPointsDates = xDates;
             this.xPoints = xDates.Select(item => item.Day).ToArray();
             this.yPoints = yPoints;
-            this.dataArray = data;
+            this.dataPoints = data;
+
+            this.title = title;
+            this.subTitles = subTitles;
+            this.linePens = brushes.Select(item => new Pen(item, lineWidth)).ToArray();
 
             this.xChartPadding = 20;
             this.yChartPadding = 20;
 
             this.InvalidateVisual();
-        }
-
-        public void SetTitleAndBrushes(string title, string[] categories, Brush[] brushes)
-        {
-            this.title = title;
-            this.categories = categories;
-            this.linePens = brushes.Select(item => new Pen(item, lineWidth)).ToArray();
         }
 
         private FormattedText GetFormattedText(string str)
@@ -68,10 +65,10 @@ namespace FamilyMartUI.UC
         {
             base.OnRender(dc);
             if (xPoints.IsNullOrEmpty() || yPoints.IsNullOrEmpty() ||
-                dataArray.IsNullOrEmpty() || xPointsDates.IsNullOrEmpty() ||
+                dataPoints.IsNullOrEmpty() || xPointsDates.IsNullOrEmpty() ||
                 linePens.IsNullOrEmpty())
             {
-                throw new InvalidOperationException();
+                return;
             }
 
             Pen blackPen = new Pen(Brushes.Black, lineWidth);
@@ -122,17 +119,17 @@ namespace FamilyMartUI.UC
 
             //divide to the every value step
             yStep = canvasHeight / yPoints.Max();
-            for (int i = 0; i <= dataArray.GetUpperBound(0); i++)
+            for (int i = 0; i <= dataPoints.GetUpperBound(0); i++)
             {
                 //Line
                 j = 1;
                 Pen currentPen = linePens[i];
                 Point lastPoint = new Point(xChartPadding, canvasHeight + yChartPadding);
 
-                for (int z = 0; z <= dataArray[0].GetUpperBound(0); z++, j++)
+                for (int z = 0; z <= dataPoints[0].GetUpperBound(0); z++, j++)
                 {
                     Point newPoint = new Point(xChartPadding + j * xStep,
-                                               canvasHeight + yChartPadding - dataArray[i][z] * yStep);
+                                               canvasHeight + yChartPadding - dataPoints[i][z] * yStep);
                     dc.DrawLine(currentPen, lastPoint, newPoint);
                     dc.DrawEllipse(currentPen.Brush, currentPen, newPoint, pointRadius, pointRadius);
                     lastPoint = newPoint;
@@ -145,13 +142,14 @@ namespace FamilyMartUI.UC
                 dc.DrawText(ft, new Point(this.ActualWidth / 2, 0));
             }
 
-            if (!categories.IsNullOrEmpty() && !linePens.IsNullOrEmpty())
+            if (!subTitles.IsNullOrEmpty() && !linePens.IsNullOrEmpty() &&
+                subTitles.Length == linePens.Length)
             {
                 double yMiddle = this.ActualHeight / 2;
-                int middleValue = (int)Math.Ceiling(categories.Length * 1.0 / 2);
-                for (int i = 0; i < categories.Length; i++)
+                int middleValue = (int)Math.Ceiling(subTitles.Length * 1.0 / 2);
+                for (int i = 0; i < subTitles.Length; i++)
                 {
-                    FormattedText ft = GetFormattedText(categories[i], linePens[i].Brush);
+                    FormattedText ft = GetFormattedText(subTitles[i], linePens[i].Brush);
                     dc.DrawText(ft, new Point(xChartPadding + canvasWidth + offset, yMiddle - 2 * yChartPadding * (--middleValue)));
                 }
             }

@@ -6,22 +6,22 @@ namespace FamilyMartUI.UC
     /// <summary>
     /// Interaction logic for UCQuery.xaml
     /// </summary>
-    public partial class UCQuery : UserControl
+    public partial class UCSearch : UserControl
     {
-        public UCQuery()
+        public UCSearch()
         {
             InitializeComponent();
         }
 
-        QueryViewModel ViewModel
+        SearchViewModel ViewModel
         {
-            get { return this.DataContext as QueryViewModel; }
+            get { return this.DataContext as SearchViewModel; }
         }
 
         private void RadioButton_Checked(object sender, System.Windows.RoutedEventArgs e)
         {
             RadioButton radioBtn = sender as RadioButton;
-            if (radioBtn == null)
+            if (radioBtn == null || this.ViewModel == null)
             {
                 return;
             }
