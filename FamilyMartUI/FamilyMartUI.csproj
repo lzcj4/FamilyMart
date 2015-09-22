@@ -54,6 +54,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ChartWindow.xaml.cs">
+      <DependentUpon>ChartWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\AndVisibilityConverter.cs" />
     <Compile Include="Common\BooleanConverter.cs" />
     <Compile Include="Common\BooleanToVisibilityConverter.cs" />
@@ -80,6 +83,10 @@
     <Compile Include="ViewModel\ISortOrder.cs" />
     <Compile Include="ViewModel\SortOrderViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Page Include="ChartWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

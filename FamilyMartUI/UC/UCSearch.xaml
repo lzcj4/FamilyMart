@@ -32,9 +32,10 @@
         <DatePicker Grid.Row="1" Grid.Column="1" Name="txtEndDate" Margin="5"  VerticalAlignment="Center"
                     Text="{Binding EndDate,Mode=TwoWay}" FontSize="13" />
 
-
-        <Button Name="btnQuery" Content="查询" Grid.Row="2" Grid.ColumnSpan="2" Width="80" Margin="5,20,0,0" Command="{Binding SearchCommand}"/>
-
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+            <Button Name="btnQuery" Content="查询" Width="80"  Command="{Binding SearchCommand}"/>
+        </StackPanel>
+     
         <!--<ComboBox Grid.Row="2" Grid.Column="1"  Margin="5" VerticalAlignment="Center" DisplayMemberPath="Title"
                   IteodmsSource="{Binding GoodsTypeView}" SelectedValuePath="Value" SelectedIndex="0" />-->
 
@@ -64,6 +65,8 @@
             <RadioButton Name="radNoodle"  Content="调理面" Grid.Row="2" Grid.Column="3" Checked="RadioButton_Checked"/>
             <RadioButton Name="radRiceRoll" Content="饭团"  Grid.Row="4" Grid.Column="0" Checked="RadioButton_Checked"/>
             <RadioButton Name="radSushi" Content="寿司"  Grid.Row="4" Grid.Column="1" Checked="RadioButton_Checked"/>
+
+            <Button Name="btnChart" Content="全部" Width="50"  Grid.Row="4" Grid.Column="2"  Command="{Binding DetailCommand}"/>
         </Grid>
     </Grid>
 </UserControl>

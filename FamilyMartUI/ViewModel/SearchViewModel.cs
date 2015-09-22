@@ -74,12 +74,27 @@ namespace FamilyMartUI.ViewModel
             }
         }
 
-        public event EventHandler<EventArgs<SearchViewModel, bool>> OnSearch;
-        private void RaiseOnSearch(bool isReload)
+        public ICommand DetailCommand
+        {
+            get
+            {
+                return new GenericCommand()
+                {
+                    ExecuteCallback = (obj) =>
+                    {
+                        RaiseOnSearch(null);
+                    },
+                    CanExecuteCallback = (obj) => { return true; }
+                };
+            }
+        }
+
+        public event EventHandler<EventArgs<SearchViewModel, bool?>> OnSearch;
+        private void RaiseOnSearch(bool? isReload)
         {
             if (null != OnSearch)
             {
-                OnSearch(this, new EventArgs<SearchViewModel, bool>(this, isReload));
+                OnSearch(this, new EventArgs<SearchViewModel, bool?>(this, isReload));
             }
         }
 
@@ -136,9 +151,9 @@ namespace FamilyMartUI.ViewModel
         Electric = 4,
         BoxLaunch = 5,
         Bread = 6,
-        Noodel=7,
-        RiceRoll=8,
-        Sushi=9,
+        Noodel = 7,
+        RiceRoll = 8,
+        Sushi = 9,
 
     }
 }

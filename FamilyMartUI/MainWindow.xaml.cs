@@ -49,13 +49,19 @@ namespace FamilyMartUI
             this.ViewModel.LoadAsync(UpadteStatisticChart);
         }
 
-        void SearchViewModel_OnSearch(object sender, UC.EventArgs<SearchViewModel, bool> e)
+        void SearchViewModel_OnSearch(object sender, UC.EventArgs<SearchViewModel, bool?> e)
         {
-            if (e.Item2)
+            if (e.Item2 == null)
+            {
+                ChartWindow chartWindow = new ChartWindow();
+                chartWindow.DataContext = this.DataContext;
+                chartWindow.Show();
+            }
+            else if (e.Item2 == true)
             {
                 this.ViewModel.LoadAsync(e.Item1.StartDate, e.Item1.EndDate, UpadteStatisticChart);
             }
-            else
+            else if (e.Item2 == false)
             {
                 UpadteStatisticChart();
             }
