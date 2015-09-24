@@ -154,6 +154,6 @@ namespace FamilyMartUI.ViewModel
         Noodel = 7,
         RiceRoll = 8,
         Sushi = 9,
-
+        JiXiang = 10,
     }
 }

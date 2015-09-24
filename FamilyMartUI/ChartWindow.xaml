@@ -43,6 +43,7 @@
             <CheckBox Name="chkNoodle"  Content="调理面" Grid.Row="2" Grid.Column="3"  Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" />
             <CheckBox Name="chkRiceRoll" Content="饭团"  Grid.Row="4" Grid.Column="0"  Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" />
             <CheckBox Name="chkSushi" Content="寿司"  Grid.Row="4" Grid.Column="1"  Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" />
+            <CheckBox Name="chkJiXiang" Content="集享卡"  Grid.Row="4" Grid.Column="2"  Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" />
         </Grid>
 
         <uc:UCChart x:Name="ucAmount" Grid.Row="0"  Grid.Column="1" Margin="10,0"/>
@@ -55,5 +56,6 @@
         <uc:UCChart x:Name="ucNoodle" Grid.Row="2"  Grid.Column="2" Margin="10,0"/>
         <uc:UCChart x:Name="ucRiceRoll" Grid.Row="3"  Grid.Column="0" Margin="10,0"/>
         <uc:UCChart x:Name="ucSuShi" Grid.Row="3"  Grid.Column="1" Margin="10,0"/>
+        <uc:UCChart x:Name="ucJiXiang" Grid.Row="3"  Grid.Column="2" Margin="10,0"/>
     </Grid>
 </Window>

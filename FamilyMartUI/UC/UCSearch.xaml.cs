@@ -58,6 +58,9 @@ namespace FamilyMartUI.UC
                 case "寿司":
                     this.ViewModel.CurrentStatisticType = StatisticType.Sushi;
                     break;
+                case "集享卡":
+                    this.ViewModel.CurrentStatisticType = StatisticType.JiXiang;
+                    break;
                 default:
                     break;
             }

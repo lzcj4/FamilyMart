@@ -153,6 +153,17 @@ namespace FamilyMartUI
                 case StatisticType.Sushi:
                     SetThreeLineByType(datetimes, Settings.Default.SuShi, "寿司");
                     break;
+                case StatisticType.JiXiang:
+                    for (int i = 0; i < 10; i++)
+                    {
+                        levels[i] = (i + 1) * Settings.Default.JiXiang;
+                    }
+
+                    datas = new double[1][];
+                    datas[0] = list.Select(item => item.Details.FirstOrDefault(subItem => subItem.Goods.Name == "集享卡"))
+                                                                 .Select(item => item.FirstSale).ToArray();
+                    ucChart.SetData(datetimes, levels, datas, "集享卡", emptyStrings, oneBrush);
+                    break;
                 default:
                     break;
             }

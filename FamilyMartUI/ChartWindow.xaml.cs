@@ -39,6 +39,7 @@ namespace FamilyMartUI
             chkNoodle.IsChecked = true;
             chkRiceRoll.IsChecked = true;
             chkSushi.IsChecked = true;
+            chkJiXiang.IsChecked = true;
         }
 
         MainViewModel ViewModel
@@ -106,6 +107,9 @@ namespace FamilyMartUI
                 case "寿司":
                     this.CurrentStatisticType = StatisticType.Sushi;
                     break;
+                case "集享卡":
+                    this.CurrentStatisticType = StatisticType.JiXiang;
+                    break;
                 default:
                     break;
             }
@@ -156,6 +160,9 @@ namespace FamilyMartUI
                     break;
                 case StatisticType.Sushi:
                     ucSuShi.SetData(datetimes, levels, datas, "寿司", threeTitles, threeBrushes);
+                    break;
+                case StatisticType.JiXiang:
+                    ucSuShi.SetData(datetimes, levels, datas, "集享卡", threeTitles, threeBrushes);
                     break;
                 default:
                     break;
@@ -240,6 +247,17 @@ namespace FamilyMartUI
                     break;
                 case StatisticType.Sushi:
                     SetThreeLineByType(ucSuShi, datetimes, Settings.Default.SuShi, "寿司");
+                    break;
+                case StatisticType.JiXiang:
+                    for (int i = 0; i < 10; i++)
+                    {
+                        levels[i] = (i + 1) * Settings.Default.JiXiang;
+                    }
+
+                    datas = new double[1][];
+                    datas[0] = list.Select(item => item.Details.FirstOrDefault(subItem => subItem.Goods.Name == "集享卡"))
+                                                                 .Select(item => item.FirstSale).ToArray();
+                    ucJiXiang.SetData(datetimes, levels, datas, "集享卡", emptyStrings, oneBrush);
                     break;
                 default:
                     break;

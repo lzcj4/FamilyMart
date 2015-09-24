@@ -65,8 +65,8 @@
             <RadioButton Name="radNoodle"  Content="调理面" Grid.Row="2" Grid.Column="3" Checked="RadioButton_Checked"/>
             <RadioButton Name="radRiceRoll" Content="饭团"  Grid.Row="4" Grid.Column="0" Checked="RadioButton_Checked"/>
             <RadioButton Name="radSushi" Content="寿司"  Grid.Row="4" Grid.Column="1" Checked="RadioButton_Checked"/>
-
-            <Button Name="btnChart" Content="全部" Width="50"  Grid.Row="4" Grid.Column="2"  Command="{Binding DetailCommand}"/>
+            <RadioButton Name="radJiXiang" Content="集享卡"  Grid.Row="4" Grid.Column="2" Checked="RadioButton_Checked"/>
+            <Button Name="btnChart" Content="全部" Width="50"  Grid.Row="4" Grid.Column="3"  Command="{Binding DetailCommand}"/>
         </Grid>
     </Grid>
 </UserControl>

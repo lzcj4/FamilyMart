@@ -142,5 +142,17 @@ namespace FamilyMartUI.Properties {
                 this["SuShi"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public int JiXiang {
+            get {
+                return ((int)(this["JiXiang"]));
+            }
+            set {
+                this["JiXiang"] = value;
+            }
+        }
     }
 }
