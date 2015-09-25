@@ -162,7 +162,7 @@ namespace FamilyMartUI
                     ucSuShi.SetData(datetimes, levels, datas, "寿司", threeTitles, threeBrushes);
                     break;
                 case StatisticType.JiXiang:
-                    ucSuShi.SetData(datetimes, levels, datas, "集享卡", threeTitles, threeBrushes);
+                    ucJiXiang.SetData(datetimes, levels, datas, "集享卡", threeTitles, threeBrushes);
                     break;
                 default:
                     break;
