@@ -57,7 +57,7 @@ namespace FamilyMartUI.UC
         private FormattedText GetFormattedText(string str, Brush brush)
         {
             FormattedText formatText = new FormattedText(str, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
-                                                         new Typeface(fontFace), 18, brush);
+                                                         new Typeface(fontFace), 16, brush);
             return formatText;
         }
 

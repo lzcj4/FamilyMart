@@ -24,13 +24,13 @@
       <Value Profile="(Default)">35</Value>
     </Setting>
     <Setting Name="Noodel" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">20</Value>
+      <Value Profile="(Default)">15</Value>
     </Setting>
     <Setting Name="RiceRoll" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">10</Value>
+      <Value Profile="(Default)">8</Value>
     </Setting>
     <Setting Name="SuShi" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">10</Value>
+      <Value Profile="(Default)">8</Value>
     </Setting>
     <Setting Name="JiXiang" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">5</Value>

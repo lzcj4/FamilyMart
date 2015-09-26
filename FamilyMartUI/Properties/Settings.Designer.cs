@@ -109,7 +109,7 @@ namespace FamilyMartUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        [global::System.Configuration.DefaultSettingValueAttribute("15")]
         public int Noodel {
             get {
                 return ((int)(this["Noodel"]));
@@ -121,7 +121,7 @@ namespace FamilyMartUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        [global::System.Configuration.DefaultSettingValueAttribute("8")]
         public int RiceRoll {
             get {
                 return ((int)(this["RiceRoll"]));
@@ -133,7 +133,7 @@ namespace FamilyMartUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        [global::System.Configuration.DefaultSettingValueAttribute("8")]
         public int SuShi {
             get {
                 return ((int)(this["SuShi"]));
