@@ -7,6 +7,7 @@ using DAL.Model;
 using FamilyMartUI.Common;
 using Microsoft.Win32;
 using System.Text;
+using System.Collections.Generic;
 
 namespace FamilyMartUI.UC
 {
@@ -18,6 +19,12 @@ namespace FamilyMartUI.UC
         public UCReportParser()
         {
             InitializeComponent();
+            IList<Tuple<string, string>> list = new List<Tuple<string, string>>();
+            list.Add(new Tuple<string, string>("晴", "晴"));
+            list.Add(new Tuple<string, string>("雨", "雨"));
+            list.Add(new Tuple<string, string>("阴", "阴"));
+            list.Add(new Tuple<string, string>("雪", "雪"));
+            comWeather.ItemsSource = list;
         }
 
         public event EventHandler OnChanged;
@@ -40,6 +47,7 @@ namespace FamilyMartUI.UC
             }
         }
 
+        private string Weather { get { return comWeather.SelectedValue as string; } }
         private void ButtonFile_Click(object sender, RoutedEventArgs e)
         {
             FMDBHelper dbHelper = FMDBHelper.Instance;
@@ -49,6 +57,7 @@ namespace FamilyMartUI.UC
             string[] filePaths = openDlg.FileNames;
             bool isExisted = false;
 
+            string weather = this.Weather;
             Action action = new Action(() =>
             {
                 //Directory.GetFiles(@"E:\FM Record", "*");
@@ -62,7 +71,7 @@ namespace FamilyMartUI.UC
                             string s = sr.ReadToEnd();
                             try
                             {
-                                var v = DialyReportParser.Parse(s);
+                                var v = DialyReportParser.Parse(s,  weather);
                                 if (v != null)
                                 {
                                     dbHelper.InsertDialyReport(v);
@@ -70,8 +79,8 @@ namespace FamilyMartUI.UC
                                 }
                             }
                             catch (System.Exception ex)
-                            {                            	    
-                            }                        
+                            {
+                            }
 
                             string error = DialyReportParser.GetLatestError();
                             if (!error.IsNullOrEmpty())

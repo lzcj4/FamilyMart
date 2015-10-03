@@ -123,6 +123,100 @@ namespace DAL
             return dialyRep;
         }
 
+
+        public static DialyReport Parse(string str, string weather)
+        {
+            if (str.IsNullOrEmpty())
+            {
+                throw new ArgumentNullException("当前解析报表数据不能为空");
+            }
+
+            sbInfo.Clear();
+            string[] parts = str.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.IsNullOrEmpty())
+            {
+                throw new InvalidOperationException("当前解释日商数据非27项，请正确格式化");
+            }
+            bool hasHargendas = parts[17].Contains("哈根达斯");
+            if (hasHargendas)
+            {
+                if (parts.Count() != 27)
+                {
+                    sbInfo.AppendLine("当前数据有缺少，非 27 个标准项");
+                    Logger.WriteLine("当前数据有缺少，非 27 个标准项");
+                }
+            }
+            else
+            {
+                if (parts.Count() != 26)
+                {
+                    sbInfo.AppendLine("当前数据有缺少，非 26 个标准项");
+                    Logger.WriteLine("当前数据有缺少，非 26 个标准项");
+                }
+            }
+
+            for (int i = 0; i < parts.Length; i++)
+            {
+                parts[i] = parts[i].Trim();
+            }
+
+            DialyReport dialyRep = new DialyReport();
+            dialyRep.SaleDate = GetDate(parts[0]);
+            dialyRep.Amount = GetDoubleValue("余杭文一西路店日商", parts[1]);
+            dialyRep.Customer = (int)GetDoubleValue("来客数", parts[2]);
+            dialyRep.Waste = GetDoubleValue("报废", parts[3]);
+
+            AddNormalRecord("OC包含果汁", parts[4], dialyRep);
+            AddNormalRecord("中岛柜", parts[5], dialyRep);
+            AddNormalRecord("关东煮", parts[6], dialyRep);
+            AddNormalRecord("蒸包", parts[7], dialyRep);
+
+            AddDeliveryRecord("盒饭", parts[8], dialyRep);
+            AddDeliveryRecord("饭团", parts[9], dialyRep);
+            AddDeliveryRecord("三明治", parts[10], dialyRep);
+            AddDeliveryRecord("寿司", parts[11], dialyRep);
+            AddDeliveryRecord("调理面", parts[12], dialyRep);
+            AddDeliveryRecord("面包", parts[13], dialyRep);
+
+            AddNormalRecord("集享卡", parts[14], dialyRep);
+            AddNormalRecord("+2元得康师傅饮品", parts[15], dialyRep);
+            AddNormalRecord("+5元维他椰子水", parts[16], dialyRep);
+            if (hasHargendas)
+            {
+                AddNormalRecord("哈根达斯小纸杯", parts[17], dialyRep);
+                AddNormalRecord("冰淇淋", parts[18], dialyRep);
+                AddNormalRecord("咖茶", parts[19], dialyRep);
+
+                dialyRep.ParttimeEmployee = GetDoubleValue("兼职", parts[20]);
+                dialyRep.Employee = GetDoubleValue("正职", parts[21]);
+
+                GetBoxRecord("物流箱", parts[22], dialyRep);
+
+                dialyRep.PackingMaterialAmount = GetDoubleValue("包材金额", parts[23]);
+                dialyRep.ConsumeableAmount = GetDoubleValue("消耗品金额", parts[24]);
+                dialyRep.ElectrictCharge = GetDoubleValue("电表度数", parts[25]);
+                dialyRep.Problem = GetStrValue("神秘客问题", parts[26]);
+            }
+            else
+            {
+                AddNormalRecord("哈根达斯小纸杯", "哈根达斯小纸杯0", dialyRep);
+                AddNormalRecord("冰淇淋", parts[17], dialyRep);
+                AddNormalRecord("咖茶", parts[18], dialyRep);
+
+                dialyRep.ParttimeEmployee = GetDoubleValue("兼职", parts[19]);
+                dialyRep.Employee = GetDoubleValue("正职", parts[20]);
+
+                GetBoxRecord("物流箱", parts[21], dialyRep);
+
+                dialyRep.PackingMaterialAmount = GetDoubleValue("包材金额", parts[22]);
+                dialyRep.ConsumeableAmount = GetDoubleValue("消耗品金额", parts[23]);
+                dialyRep.ElectrictCharge = GetDoubleValue("电表度数", parts[24]);
+                dialyRep.Problem = GetStrValue("神秘客问题", parts[25]);
+            }
+            dialyRep.Weather = weather;
+            Logger.Error(sbInfo.ToString());
+            return dialyRep;
+        }
         public static string GetLatestError()
         {
             return sbInfo.ToString();
@@ -287,7 +381,7 @@ namespace DAL
                 throw new ArgumentNullException(string.Format("当前:{0} 解析失败", str));
             }
 
-            if (matchTimes !=2)
+            if (matchTimes != 2)
             {
                 sbInfo.AppendLine(string.Format("当前:{0} 解析可能有问题", str));
             }

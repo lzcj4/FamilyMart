@@ -39,6 +39,7 @@ namespace DAL.Model
         {
             return GetGoods(sqlSelectGoods + sqlOrderbyAsc);
         }
+
         private Goods GetGoods(SQLiteDataReader reader)
         {
             Goods item = new Goods();
@@ -130,6 +131,7 @@ namespace DAL.Model
             item.PackingMaterialAmount = Convert.ToDouble(reader["PackingMaterialAmount"]);
             item.ConsumeableAmount = Convert.ToDouble(reader["ConsumeableAmount"]);
             item.ElectrictCharge = Convert.ToDouble(reader["ElectrictCharge"]);
+            item.Weather = Convert.ToString(reader["Weather"]);
             item.Problem = Convert.ToString(reader["Problem"]);
             return item;
         }
@@ -169,11 +171,11 @@ namespace DAL.Model
         public bool InsertDialyReport(DialyReport item)
         {
             string insertFormat = @" insert into tb_dialyreport( SaleDate,Amount,Customer,Waste,ParttimeEmployee,Employee,
-                                                                 PackingMaterialAmount,ConsumeableAmount,ElectrictCharge,Problem) 
-                                 values('{0}',{1},{2},{3},{4},{5},{6},{7},{8},'{9}')";
+                                                                 PackingMaterialAmount,ConsumeableAmount,ElectrictCharge,Problem,Weather) 
+                                 values('{0}',{1},{2},{3},{4},{5},{6},{7},{8},'{9}','{10}')";
             string sql = string.Format(insertFormat, item.SaleDate.ToString("yyyy-MM-dd"), item.Amount, item.Customer, item.Waste, item.ParttimeEmployee,
                                                     item.Employee, item.PackingMaterialAmount, item.ConsumeableAmount,
-                                                    item.ElectrictCharge, item.Problem);
+                                                    item.ElectrictCharge, item.Problem,item.Weather);
             int repId = dbHelper.Insert(sql);
             item.Id = repId;
             StringBuilder sb = new StringBuilder();

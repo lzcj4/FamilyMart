@@ -32,6 +32,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+         
             <TextBlock Text="统计类型：" Grid.Row="0" Grid.Column="0"/>
             <CheckBox Name="chkAmount"  Content="日销" Grid.Row="1" Grid.Column="0"   Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" />
             <CheckBox Name="chkCustomer" Content="来客"   Grid.Row="1" Grid.Column="1"  Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" />
@@ -45,8 +46,9 @@
             <CheckBox Name="chkSushi" Content="寿司"  Grid.Row="4" Grid.Column="1"  Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" />
             <CheckBox Name="chkJiXiang" Content="集享卡"  Grid.Row="4" Grid.Column="2"  Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" />
         </Grid>
-
+        <GridSplitter Width="5" Grid.RowSpan="4"/>
         <uc:UCChart x:Name="ucAmount" Grid.Row="0"  Grid.Column="1" Margin="10,0"/>
+        <GridSplitter Width="5" Grid.RowSpan="4" Grid.Column="1" />
         <uc:UCChart x:Name="ucCustomer" Grid.Row="0"  Grid.Column="2" Margin="10,0"/>
         <uc:UCChart x:Name="ucWaste" Grid.Row="1"  Grid.Column="0" Margin="10,0"/>
         <uc:UCChart x:Name="ucWorkHours" Grid.Row="1"  Grid.Column="1" Margin="10,0" />

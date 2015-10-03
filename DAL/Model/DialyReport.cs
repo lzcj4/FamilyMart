@@ -91,6 +91,10 @@ namespace DAL.Model
         /// </summary>
         public string Problem { get; set; }
 
+        /// <summary>
+        /// 天气
+        /// </summary>
+        public string Weather { get; set; }
         public IList<GoodsRecord> Details { get; private set; }
     }
 }

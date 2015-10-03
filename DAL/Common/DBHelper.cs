@@ -14,7 +14,7 @@ namespace DAL.Common
         public DBHelper()
         {
             sqlCon = new SQLiteConnection(connectionStr);
-            OpenConnection();
+            OpenConnection();          
         }
 
         private void OpenConnection()

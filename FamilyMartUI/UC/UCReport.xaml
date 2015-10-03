@@ -98,13 +98,18 @@
                                         DisplayMemberBinding="{Binding Employee}"  
                                         HeaderTemplate="{StaticResource NormalSortHeaderTemplate}"/>
 
-                        <GridViewColumn x:Name="colPacking" Width="50" Header="包材"
+                        <!--<GridViewColumn x:Name="colPacking" Width="50" Header="包材"
                                        self:ColumnWidthHelper.MinWidth="0" self:ColumnWidthHelper.MaxWidth="300"
                                        self:ColumnWidthHelper.SortPropertyName="PackingMaterialAmount"
                                        DisplayMemberBinding="{Binding PackingMaterialAmount}" 
+                                        HeaderTemplate="{StaticResource NormalSortHeaderTemplate}"/>-->
+                        <GridViewColumn x:Name="colPacking" Width="40" Header="天气"
+                                       self:ColumnWidthHelper.MinWidth="0" self:ColumnWidthHelper.MaxWidth="300"
+                                       self:ColumnWidthHelper.SortPropertyName="Weather"
+                                       DisplayMemberBinding="{Binding Weather}" 
                                         HeaderTemplate="{StaticResource NormalSortHeaderTemplate}"/>
 
-                        <GridViewColumn x:Name="colConsumeable" Width="50" Header="易耗品"
+                        <GridViewColumn x:Name="colConsumeable" Width="60" Header="易耗品"
                                         self:ColumnWidthHelper.MinWidth="0" self:ColumnWidthHelper.MaxWidth="300"
                                         self:ColumnWidthHelper.SortPropertyName="ConsumeableAmount"
                                         DisplayMemberBinding="{Binding ConsumeableAmount}"  
