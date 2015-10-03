@@ -98,8 +98,10 @@ namespace FamilyMartUI.UC
                 FormattedText ft = GetFormattedText(xPoints[i].ToString(),
                                                    (itemDate.DayOfWeek == DayOfWeek.Sunday ||
                                                     itemDate.DayOfWeek == DayOfWeek.Saturday) ? Brushes.Red : Brushes.Black);
-                dc.DrawLine(blackPen, new Point(startX, canvasHeight + yChartPadding),
-                                      new Point(startX, canvasHeight + yChartPadding - flagHeight));
+                //dc.DrawLine(blackPen, new Point(startX, canvasHeight + yChartPadding),
+                //                      new Point(startX, canvasHeight + yChartPadding - flagHeight));
+                dc.DrawLine(grayPen, new Point(startX, canvasHeight + yChartPadding),
+                          new Point(startX,  yChartPadding));
                 dc.DrawText(ft, new Point(startX - ft.Width / 2, canvasHeight + yChartPadding - flagHeight / 4));
             }
 
@@ -113,7 +115,8 @@ namespace FamilyMartUI.UC
             {
                 double startY = j * yStep;
                 FormattedText ft = GetFormattedText(yPoints[i].ToString());
-                dc.DrawLine(grayPen, new Point(xChartPadding, canvasHeight + yChartPadding - startY), new Point(canvasWidth + xChartPadding, canvasHeight + yChartPadding - startY));
+                dc.DrawLine(grayPen, new Point(xChartPadding, canvasHeight + yChartPadding - startY),
+                    new Point(canvasWidth + xChartPadding, canvasHeight + yChartPadding - startY));
                 dc.DrawText(ft, new Point(0, canvasHeight + yChartPadding - startY - ft.Height / 2));
             }
 
