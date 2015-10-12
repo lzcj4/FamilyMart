@@ -28,7 +28,8 @@
             </Grid.ColumnDefinitions>
             
             <uc:UCReport ContentView="{Binding ContentView}" SummaryText="{Binding SummaryText}"  DataContext="{Binding DialyViewModel}" 
-                     Grid.Column="0"  x:Name="ucDialyReport" Margin="5"/>            
+                     Grid.Column="0"  x:Name="ucDialyReport" Margin="5"/>
+            <GridSplitter Grid.Column="0" Width="5"/>
             <uc:UCDetail ContentView="{Binding ContentView}"  DataContext="{Binding DetailViewModel}"
                      Grid.Column="1"   Margin="5"/>
         </Grid>

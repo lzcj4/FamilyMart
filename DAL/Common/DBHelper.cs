@@ -4,17 +4,45 @@ using System.Linq;
 using System.Text;
 using System.Data.SQLite;
 using System.Data;
+using System.IO;
+using System.Reflection;
 
 namespace DAL.Common
 {
     public class DBHelper : IDisposable
     {
         private SQLiteConnection sqlCon;
+        private const string dbPath = "./DB/FMDB.db";
+        private const string sqlScriptPath = "./DB/FamilyMateDB.sql";
         private const string connectionStr = "Data Source=./DB/FMDB.db;Version=3;";
         public DBHelper()
         {
+            bool isDBExisted = false;
+            if (!(isDBExisted = File.Exists(dbPath)))
+            {
+                using (File.Create(dbPath))
+                {
+                }
+            }
             sqlCon = new SQLiteConnection(connectionStr);
-            OpenConnection();          
+            OpenConnection();
+
+            if (!isDBExisted)
+            {
+                var s = this.GetType().Assembly.GetManifestResourceStream(sqlScriptPath);
+                if (File.Exists(sqlScriptPath))
+                {
+                    using (FileStream fs = File.OpenRead(sqlScriptPath))
+                    {
+                        using (StreamReader sr = new StreamReader(fs))
+                        {
+                            string sql = sr.ReadToEnd();
+                            ExecuteSqlNonQuery(sql);
+                        }
+
+                    }
+                }
+            }          
         }
 
         private void OpenConnection()

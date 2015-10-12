@@ -30,6 +30,7 @@ namespace FamilyMartUI.UC
         string title = string.Empty;
         string[] subTitles = { "进", "销", "废" };
         Pen[] linePens = { new Pen(Brushes.Green, lineWidth), new Pen(Brushes.Blue, lineWidth), new Pen(Brushes.Red, lineWidth), };
+        Pen yOverPen = new Pen(Brushes.Red, lineWidth * 2);
 
         public void SetData(DateTime[] xDates, int[] yPoints, double[][] data,
                                      string title, string[] subTitles, Brush[] brushes)
@@ -101,7 +102,7 @@ namespace FamilyMartUI.UC
                 //dc.DrawLine(blackPen, new Point(startX, canvasHeight + yChartPadding),
                 //                      new Point(startX, canvasHeight + yChartPadding - flagHeight));
                 dc.DrawLine(grayPen, new Point(startX, canvasHeight + yChartPadding),
-                          new Point(startX,  yChartPadding));
+                          new Point(startX, yChartPadding));
                 dc.DrawText(ft, new Point(startX - ft.Width / 2, canvasHeight + yChartPadding - flagHeight / 4));
             }
 
@@ -120,8 +121,9 @@ namespace FamilyMartUI.UC
                 dc.DrawText(ft, new Point(0, canvasHeight + yChartPadding - startY - ft.Height / 2));
             }
 
+            int yMax = yPoints.Max();
             //divide to the every value step
-            yStep = canvasHeight / yPoints.Max();
+            yStep = canvasHeight / yMax;
             for (int i = 0; i <= dataPoints.GetUpperBound(0); i++)
             {
                 //Line
@@ -133,8 +135,22 @@ namespace FamilyMartUI.UC
                 {
                     Point newPoint = new Point(xChartPadding + j * xStep,
                                                canvasHeight + yChartPadding - dataPoints[i][z] * yStep);
+                    bool isOverYMax = dataPoints[i][z] > yMax;
+                    if (isOverYMax)
+                    {
+                        newPoint.Y = yChartPadding;
+                    }
                     dc.DrawLine(currentPen, lastPoint, newPoint);
-                    dc.DrawEllipse(currentPen.Brush, currentPen, newPoint, pointRadius, pointRadius);
+                    if (isOverYMax)
+                    {
+                        dc.DrawEllipse(yOverPen.Brush, yOverPen, newPoint, pointRadius, pointRadius);
+                        //FormattedText ft = GetFormattedText(dataPoints[i][z].ToString(), yOverPen.Brush);
+                        //dc.DrawText(ft, new Point(newPoint.X, 0));
+                    }
+                    else
+                    {
+                        dc.DrawEllipse(currentPen.Brush, currentPen, newPoint, pointRadius, pointRadius);
+                    }
                     lastPoint = newPoint;
                 }
             }

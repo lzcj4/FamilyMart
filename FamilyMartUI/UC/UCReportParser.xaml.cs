@@ -35,8 +35,8 @@ namespace FamilyMartUI.UC
             {
                 return;
             }
-
-            var item = DialyReportParser.Parse(s);
+            string weather = this.Weather;
+            var item = DialyReportParser.Parse(weather,s);
             if (item != null)
             {
                 FMDBHelper.Instance.InsertDialyReport(item);
