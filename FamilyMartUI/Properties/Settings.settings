@@ -3,16 +3,16 @@
   <Profiles />
   <Settings>
     <Setting Name="Amount" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">3000</Value>
+      <Value Profile="(Default)">2500</Value>
     </Setting>
     <Setting Name="Customer" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">200</Value>
+      <Value Profile="(Default)">160</Value>
     </Setting>
     <Setting Name="Waste" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">80</Value>
     </Setting>
     <Setting Name="WorkHours" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">10</Value>
+      <Value Profile="(Default)">8</Value>
     </Setting>
     <Setting Name="Electric" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">60</Value>
@@ -24,16 +24,16 @@
       <Value Profile="(Default)">35</Value>
     </Setting>
     <Setting Name="Noodel" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">15</Value>
+      <Value Profile="(Default)">12</Value>
     </Setting>
     <Setting Name="RiceRoll" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">8</Value>
+      <Value Profile="(Default)">7</Value>
     </Setting>
     <Setting Name="SuShi" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">8</Value>
+      <Value Profile="(Default)">7</Value>
     </Setting>
     <Setting Name="JiXiang" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">5</Value>
+      <Value Profile="(Default)">3</Value>
     </Setting>
   </Settings>
 </SettingsFile>

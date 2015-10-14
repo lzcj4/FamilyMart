@@ -25,7 +25,7 @@ namespace FamilyMartUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3000")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2500")]
         public int Amount {
             get {
                 return ((int)(this["Amount"]));
@@ -37,7 +37,7 @@ namespace FamilyMartUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        [global::System.Configuration.DefaultSettingValueAttribute("160")]
         public int Customer {
             get {
                 return ((int)(this["Customer"]));
@@ -61,7 +61,7 @@ namespace FamilyMartUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        [global::System.Configuration.DefaultSettingValueAttribute("8")]
         public int WorkHours {
             get {
                 return ((int)(this["WorkHours"]));
@@ -109,7 +109,7 @@ namespace FamilyMartUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("15")]
+        [global::System.Configuration.DefaultSettingValueAttribute("12")]
         public int Noodel {
             get {
                 return ((int)(this["Noodel"]));
@@ -121,7 +121,7 @@ namespace FamilyMartUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8")]
+        [global::System.Configuration.DefaultSettingValueAttribute("7")]
         public int RiceRoll {
             get {
                 return ((int)(this["RiceRoll"]));
@@ -133,7 +133,7 @@ namespace FamilyMartUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8")]
+        [global::System.Configuration.DefaultSettingValueAttribute("7")]
         public int SuShi {
             get {
                 return ((int)(this["SuShi"]));
@@ -145,7 +145,7 @@ namespace FamilyMartUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
         public int JiXiang {
             get {
                 return ((int)(this["JiXiang"]));
