@@ -146,7 +146,7 @@ namespace DAL
             int itemIndex = 17;
             if (!hasHargendas)
             {
-                AddNormalRecord("哈根达斯小纸杯", "哈根达斯小纸杯0", dialyRep);
+                //AddNormalRecord("哈根达斯小纸杯", "哈根达斯小纸杯0", dialyRep);
                 itemIndex = 16;
             }
             else
