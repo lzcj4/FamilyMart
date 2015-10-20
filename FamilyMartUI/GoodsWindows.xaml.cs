@@ -82,6 +82,7 @@ namespace FamilyMartUI
             {
                 LoadGoods();
                 DialyReportParser.LoadGoods();
+                txtName.Text = string.Empty;
             }
         }
     }
