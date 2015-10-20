@@ -65,6 +65,9 @@
     <Compile Include="Common\GridColumnWidthConverter.cs" />
     <Compile Include="Common\OverRangeWarnConverter.cs" />
     <Compile Include="Common\ReverseVisibilityConverter.cs" />
+    <Compile Include="GoodsWindows.xaml.cs">
+      <DependentUpon>GoodsWindows.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UC\UCChart.cs" />
     <Compile Include="UC\UCSearch.xaml.cs">
       <DependentUpon>UCSearch.xaml</DependentUpon>
@@ -84,6 +87,10 @@
     <Compile Include="ViewModel\SortOrderViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Page Include="ChartWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GoodsWindows.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

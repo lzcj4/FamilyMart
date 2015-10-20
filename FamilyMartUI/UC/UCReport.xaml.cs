@@ -8,6 +8,7 @@ using System.Windows.Media;
 using DAL.Model;
 using FamilyMartUI.Common;
 using FamilyMartUI.ViewModel;
+using System.Linq;
 
 namespace FamilyMartUI.UC
 {
@@ -35,7 +36,7 @@ namespace FamilyMartUI.UC
             if (element == null) return null;
             return (ICollectionView)element.GetValue(ContentViewProperty);
         }
-        
+
         /// <summary>
         ///SummaryText
         /// </summary>
@@ -56,11 +57,11 @@ namespace FamilyMartUI.UC
 
         #endregion
 
-        ISortOrder ViewModel
+        SortOrderViewModel<DialyReport> ViewModel
         {
             get
             {
-                return this.DataContext as ISortOrder;
+                return this.DataContext as SortOrderViewModel<DialyReport>;
             }
         }
 
@@ -293,6 +294,23 @@ namespace FamilyMartUI.UC
             {
                 OnSelectionChanged(this, new EventArgs<DialyReport>(item));
             }
+        }
+
+        private void MenuDelete_Click(object sender, RoutedEventArgs e)
+        {
+            var list = lvContent.SelectedItems.Cast<DialyReport>().ToList();
+            if (list.IsNullOrEmpty())
+            {
+                return;
+            }
+
+            foreach (var item in list)
+            {
+                FMDBHelper.Instance.DeleteGoodsRecords(item);
+                FMDBHelper.Instance.DeleteDialyReport(item);
+                this.ViewModel.Items.Remove(item);
+            }
+
         }
     }
 

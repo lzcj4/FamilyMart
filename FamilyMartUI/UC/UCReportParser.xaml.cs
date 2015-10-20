@@ -36,7 +36,7 @@ namespace FamilyMartUI.UC
                 return;
             }
             string weather = this.Weather;
-            var item = DialyReportParser.Parse(weather,s);
+            var item = DialyReportParser.Parse(weather, s);
             if (item != null)
             {
                 FMDBHelper.Instance.InsertDialyReport(item);
@@ -71,7 +71,7 @@ namespace FamilyMartUI.UC
                             string s = sr.ReadToEnd();
                             try
                             {
-                                var v = DialyReportParser.Parse(s,  weather);
+                                var v = DialyReportParser.Parse(s, weather);
                                 if (v != null)
                                 {
                                     dbHelper.InsertDialyReport(v);
@@ -105,6 +105,12 @@ namespace FamilyMartUI.UC
 
             });
             action.BeginInvoke((ar) => { action.EndInvoke(ar); }, action);
+        }
+
+        private void ButtonGood_Click(object sender, RoutedEventArgs e)
+        {
+            GoodsWindows gw = new GoodsWindows();
+            gw.ShowDialog();
         }
     }
 }

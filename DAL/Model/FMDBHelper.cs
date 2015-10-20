@@ -45,7 +45,7 @@ namespace DAL.Model
             Goods item = new Goods();
             item.Id = Convert.ToInt32(reader["Id"]);
             item.Name = reader["Name"].ToString();
-            item.Type = (GoodsType)Convert.ToInt32(reader["Id"]);
+            item.Type = (GoodsType)Convert.ToInt32(reader["Type"]);
             return item;
         }
 
@@ -175,7 +175,7 @@ namespace DAL.Model
                                  values('{0}',{1},{2},{3},{4},{5},{6},{7},{8},'{9}','{10}')";
             string sql = string.Format(insertFormat, item.SaleDate.ToString("yyyy-MM-dd"), item.Amount, item.Customer, item.Waste, item.ParttimeEmployee,
                                                     item.Employee, item.PackingMaterialAmount, item.ConsumeableAmount,
-                                                    item.ElectrictCharge, item.Problem,item.Weather);
+                                                    item.ElectrictCharge, item.Problem, item.Weather);
             int repId = dbHelper.Insert(sql);
             item.Id = repId;
             StringBuilder sb = new StringBuilder();
@@ -225,7 +225,19 @@ namespace DAL.Model
         #region Delete
 
 
+        public bool DeleteGoodsRecords(DialyReport item)
+        {
+            string sql = string.Format(@" delete from tb_goodsrecord where dialyreport_id={0}", item.Id);
+            int result = dbHelper.Delete(sql);
+            return result > 0;
+        }
 
+        public bool DeleteDialyReport(DialyReport item)
+        {
+            string sql = string.Format(@" delete from tb_dialyreport where id={0}", item.Id);
+            int result = dbHelper.Delete(sql);
+            return result > 0;
+        }
         #endregion
 
         #region IDisposable Members

@@ -51,6 +51,12 @@ namespace DAL
         static IDictionary<string, Goods> goodsCache = new Dictionary<string, Goods>();
         static DialyReportParser()
         {
+            LoadGoods();
+        }
+
+        public static void LoadGoods()
+        {
+            goodsCache.Clear();
             var list = FMDBHelper.Instance.GetGoods();
             foreach (var item in list)
             {
@@ -165,7 +171,10 @@ namespace DAL
             dialyRep.PackingMaterialAmount = GetDoubleValue("包材金额", parts[itemIndex + 6]);
             dialyRep.ConsumeableAmount = GetDoubleValue("消耗品金额", parts[itemIndex + 7]);
             dialyRep.ElectrictCharge = GetDoubleValue("电表度数", parts[itemIndex + 8]);
-            dialyRep.Problem = GetStrValue("神秘客问题", parts[itemIndex + 9]);
+            if (itemIndex + 9 < parts.Length)
+            {
+                dialyRep.Problem = GetStrValue("神秘客问题", parts[itemIndex + 9]);
+            }
 
             dialyRep.Weather = weather;
             Logger.Error(sbInfo.ToString());
