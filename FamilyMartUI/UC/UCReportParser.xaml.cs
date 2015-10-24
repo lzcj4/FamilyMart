@@ -36,13 +36,19 @@ namespace FamilyMartUI.UC
                 return;
             }
             string weather = this.Weather;
-            var item = DialyReportParser.Parse(weather, s);
+            var item = DialyReportParser.Parse(s, weather);
             if (item != null)
             {
                 FMDBHelper.Instance.InsertDialyReport(item);
                 if (OnChanged != null)
                 {
                     OnChanged(this, new EventArgs());
+                }
+                txtReport.Text = string.Empty;
+                string error = DialyReportParser.GetLatestError();
+                if (!error.IsNullOrEmpty())
+                {
+                    txtReport.Text = error;
                 }
             }
         }
